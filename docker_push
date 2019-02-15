@@ -1,4 +1,4 @@
 #!/bin/bash
 docker build -t ainz/urigin .
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-docker push ainz/urigin:$TRAVIS_COMMIT
+docker push ainz/urigin
