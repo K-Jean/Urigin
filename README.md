@@ -1,3 +1,4 @@
+ [![Codacy Badge](https://api.codacy.com/project/badge/Grade/03d212d3616e4d68a8c3825b9906b6c9)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=KurooUsagy/Urigin&amp;utm_campaign=Badge_Grade) 
 # Urigin
 
 The fake copy of origin. made by Arthur Yen and Kevin Jean.
