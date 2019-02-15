@@ -1,8 +1,7 @@
 language: node_js
 
 notifications:
-  webhooks:
-    - https://hooks.slack.com/services/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
+  slack: polytechparis-aju9563:hJZu47o2rdMjuko1rehVcQ8N
 
 node_js:
   - "node"
