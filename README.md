@@ -1,4 +1,4 @@
- [![Codacy Badge](https://api.codacy.com/project/badge/Grade/03d212d3616e4d68a8c3825b9906b6c9)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=KurooUsagy/Urigin&amp;utm_campaign=Badge_Grade) 
+ [![Codacy Badge](https://api.codacy.com/project/badge/Grade/03d212d3616e4d68a8c3825b9906b6c9)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=KurooUsagy/Urigin&amp;utm_campaign=Badge_Grade) [![](https://images.microbadger.com/badges/image/ainz/urigin.svg)](https://microbadger.com/images/ainz/urigin "Get your own image badge on microbadger.com") [![](https://images.microbadger.com/badges/version/ainz/urigin.svg)](https://microbadger.com/images/ainz/urigin "Get your own version badge on microbadger.com")
 # Urigin
 
 The fake copy of origin. made by Arthur Yen and Kevin Jean.
