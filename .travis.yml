@@ -2,7 +2,7 @@ language: node_js
 
 notifications:
   webhooks:
-    - $SLACK_HOOK
+    - https://hooks.slack.com/services/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
 
 node_js:
   - "node"
