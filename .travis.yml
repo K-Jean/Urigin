@@ -8,7 +8,7 @@ node_js:
   - "node"
 
 script:
-  - npm install
+  - npm install nyc -g
   - npm install codecov -g
   - npm test
 
