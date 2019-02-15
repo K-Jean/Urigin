@@ -16,6 +16,7 @@ after_success:
   - codecov
 
 services:
+  - postgresql
   - docker
 
 deploy:

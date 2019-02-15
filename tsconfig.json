@@ -3,6 +3,7 @@
         "module": "commonjs",
         "esModuleInterop": true,
         "target": "es6",
+        "removeComments": false,
         "noImplicitAny": false,
         "moduleResolution": "node",
         "sourceMap": true,
@@ -10,6 +11,7 @@
         "emitDecoratorMetadata": true,
         "outDir": "dist",
         "baseUrl": ".",
+        "sourceRoot": ".",
         "paths": {
             "*": [
                 "node_modules/*",

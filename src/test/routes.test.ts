@@ -18,11 +18,20 @@ describe('GET routes', () => {
 
         it('should be status 200', (done) => {
             request(app)
-                .get('/')
+                .post('/v1/users')
+                .send({"username": "toto", "email": "toto@toto.fr"})
                 .end((err, res) => {
-                    res.status.should.equal(404);
-                    done(err);
+                    if (err) done(err);
+                    request(app)
+                        .get('/v1/users')
+                        .end((err, res) => {
+                            if (err) done(err);
+                            res.status.should.equal(200);
+                            done();
+                        });
+                    done();
                 });
+            done();
         });
     });
 
