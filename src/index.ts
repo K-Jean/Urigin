@@ -1,5 +1,5 @@
 let express = require('express');
-let app = express();
+export const app = express();
 let port = 3000;
 var bodyParser = require('body-parser');
 
