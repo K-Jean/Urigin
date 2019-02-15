@@ -1,5 +1,5 @@
 //Our app, express
-import { app } from "../index"
+import { app, server } from "../index"
 import request from 'supertest'
 
 const chai = require('chai');
@@ -24,7 +24,9 @@ describe('GET routes', () => {
                     done(err);
                 });
         });
+    });
 
+    after(() => {
+        server.close();
     })
-
 });

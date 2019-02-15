@@ -1,5 +1,9 @@
 language: node_js
 
+notifications:
+  webhooks:
+    - $SLACK_HOOK
+
 node_js:
   - "node"
 
