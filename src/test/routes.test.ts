@@ -29,13 +29,7 @@ describe('GET routes', () => {
                             res.status.should.equal(200);
                             done();
                         });
-                    done();
                 });
-            done();
         });
     });
-
-    after(() => {
-        server.close();
-    })
 });
