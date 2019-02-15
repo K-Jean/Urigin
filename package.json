@@ -26,7 +26,7 @@
     "istanbul": "^0.4.5"
   },
   "scripts": {
-    "test": "nyc mocha"
+    "test": "./node_modules/.bin/nyc ./node_modules/.bin/mocha"
   },
   "nyc": {
     "extension": [
