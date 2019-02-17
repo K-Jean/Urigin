@@ -1,5 +1,5 @@
 import express from "express";
-let models  = require('../models');
+import {models} from "../models";
 let router  = express.Router();
 let common = require('./common');
 

@@ -1,10 +1,9 @@
 import express from "express";
-let models  = require('../models');
 let router  = express.Router();
 
-export function get(model, attributes){
+export function get(models, attributes){
     return function(request, response) {
-        model.findAll().then(function(objects) {
+        models.findAll().then(function(objects) {
             let result = [];
 
             for (let obj of objects) {
@@ -21,9 +20,9 @@ export function get(model, attributes){
     }
 }
 
-export function put(model){
+export function put(models){
     return function(request, response) {
-        model.findByPk(request.params.id).then(function(objects) {
+        models.findByPk(request.params.id).then(function(objects) {
             objects.update(request.body).then( (result,rejected) => {
                 response.json(result);
             });
@@ -31,9 +30,9 @@ export function put(model){
     }
 }
 
-export function getByRelation(model, relation, attributes){
+export function getByRelation(models, relation, attributes){
     return function(request, response) {
-        model.findByPk(request.params.id, {include : [relation]}).then(function(objects) {
+        models.findByPk(request.params.id, {include : [relation]}).then(function(objects) {
             let result;
 
             if(isIterable(objects[relation["as"]])){
@@ -67,9 +66,9 @@ function isIterable(obj) {
     return typeof obj[Symbol.iterator] === 'function';
 }
 
-export function post(model){
+export function post(models){
     return function(request, response) {
-        model.create(request.body).then(function(objects) {
+        models.create(request.body).then(function(objects) {
             response.json(objects);
         })
     }

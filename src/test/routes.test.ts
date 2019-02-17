@@ -1,6 +1,7 @@
 //Our app, express
-import { app, server } from "../index"
+import {app, server} from "../index"
 import request from 'supertest'
+import {models} from "../models"
 
 const chai = require('chai');
 const should = chai.should();
@@ -14,21 +15,22 @@ app.use(bodyParser.urlencoded({
 //describe() declares a test suite
 describe('GET routes', () => {
 
-    describe('index', () => {
+    describe('index', function() {
+        this.timeout(60000);
+
+        before((done) => {
+            models.users.create({"username": "toto", "email": "toto@toto.fr"}).then(value => {
+                done();
+            });
+        });
 
         it('should be status 200', (done) => {
             request(app)
-                .post('/v1/users')
-                .send({"username": "toto", "email": "toto@toto.fr"})
+                .get('/v1/users')
                 .end((err, res) => {
                     if (err) done(err);
-                    request(app)
-                        .get('/v1/users')
-                        .end((err, res) => {
-                            if (err) done(err);
-                            res.status.should.equal(200);
-                            done();
-                        });
+                    res.status.should.equal(200);
+                    done();
                 });
         });
     });
