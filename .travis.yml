@@ -6,6 +6,9 @@ notifications:
 node_js:
   - "node"
 
+before_script:
+  - psql -c 'create database urigin;' -U postgres
+
 script:
   - npm install nyc -g
   - npm install codecov -g
