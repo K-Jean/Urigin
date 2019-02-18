@@ -1,5 +1,5 @@
 //Our app, express
-import {app, server} from "../index"
+import {app} from "../index"
 import request from 'supertest'
 import {models} from "../models"
 
@@ -15,7 +15,12 @@ app.use(bodyParser.urlencoded({
 }));
 
 //describe() declares a test suite
-describe('Users Test case', () => {
+describe('Users Test case', function() {
+    this.timeout(60000);
+
+    before(async () => {
+        await models.sequelize.sync();
+    });
 
     describe('GET users', function() {
         this.timeout(60000);

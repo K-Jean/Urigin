@@ -1,6 +1,3 @@
-let env       = process.env.NODE_ENV || 'development';
-let config    = require("../config/config")[env];
-
 module.exports = (sequelize, DataTypes) => {
     let User = sequelize.define('users', {
         username: {
@@ -9,8 +6,6 @@ module.exports = (sequelize, DataTypes) => {
         email: {
             type: DataTypes.STRING
         }
-    }, {
-        schema: config.schema
     });
 
     return User;

@@ -32,7 +32,7 @@ Object.keys(db).forEach(modelName => {
 
 db['sequelize'] = sequelize;
 
-sequelize.sync();
+// sequelize.sync();
 
 db['Sequelize']  = Sequelize;
 
