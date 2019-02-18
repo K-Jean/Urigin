@@ -7,6 +7,14 @@ module.exports = {
         dialect: 'postgres',
         port: 5432
     },
+    test: {
+        username: "postgres",
+        password: null,
+        database: "urigin",
+        host: "localhost",
+        dialect: 'postgres',
+        port: 5432
+    },
     production: {
         username: process.env.DB_USERNAME,
         password: process.env.DB_PASSWORD,

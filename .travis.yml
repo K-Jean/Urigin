@@ -3,13 +3,6 @@ language: node_js
 notifications:
   slack: polytechparis-aju9563:hJZu47o2rdMjuko1rehVcQ8N
 
-env:
-  global:
-    - DB_USERNAME=$DB_USERNAME
-    - DB_PORT=$DB_PORT
-    - DB_NAME=$DB_NAME
-    - DB_HOSTNAME=$DB_HOSTNAME
-
 node_js:
   - "node"
 
