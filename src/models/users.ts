@@ -5,6 +5,9 @@ module.exports = (sequelize, DataTypes) => {
         },
         email: {
             type: DataTypes.STRING
+        },
+        role: {
+            type: DataTypes.INTEGER
         }
     });
 

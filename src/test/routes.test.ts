@@ -19,7 +19,9 @@ describe('Users Test case', function() {
     this.timeout(60000);
 
     before(async () => {
-        await models.sequelize.sync();
+        await models.sequelize.sync({
+            force: true
+        });
     });
 
     describe('GET users', function() {
@@ -42,14 +44,7 @@ describe('Users Test case', function() {
                 });
         });
 
-        after( (done) => {
-            models.users.destroy({
-                where: {},
-                truncate: true
-            }).then(value => {
-                done();
-            })
-        })
+
     });
 
     describe('POST users', function() {
@@ -69,14 +64,36 @@ describe('Users Test case', function() {
                     });
                 });
         });
-
-        after( (done) => {
-            models.users.destroy({
-                where: {},
-                truncate: true
-            }).then(value => {
-                done();
-            })
-        })
     });
+
+    describe('POST users with trying force Role', function() {
+        this.timeout(60000);
+
+        it('should insert user in BDD with role 0', (done) => {
+            request(app)
+                .post('/v1/users')
+                .send({"username": "arthur", "email": "gigolo@carotte.fr", "role":2})
+                .end((err, res) => {
+                    if (err) done(err);
+                    models.users.findOne({ where: {email: 'gigolo@carotte.fr'} }).then(value => {
+                        if(value == null) {
+                            done("l'utilisateur n'a pas été enregistré en bdd")
+                        }
+                        if(value.role != 0){
+                            done("l'utilisateur n'a pas le bon role")
+                        }
+                        done();
+                    });
+                });
+        });
+    });
+
+    afterEach( (done) => {
+        models.users.destroy({
+            where: {},
+            truncate: true
+        }).then(value => {
+            done();
+        })
+    })
 });
