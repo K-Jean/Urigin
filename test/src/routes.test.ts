@@ -28,7 +28,7 @@ describe('Users Test case', function() {
         this.timeout(60000);
 
         before((done) => {
-            models.users.create({"username": "toto", "email": "toto@toto.fr"}).then(value => {
+            models.users.create({"username": "toto", "email": "toto@toto.fr", "role" : 0}).then(value => {
                 done();
             });
         });
@@ -84,6 +84,28 @@ describe('Users Test case', function() {
                         }
                         done();
                     });
+                });
+        });
+    });
+
+    describe('GET users tokens', function() {
+        this.timeout(60000);
+
+        before((done) => {
+            models.users.create({"username": "toto", "email": "toto@toto.fr", "role" : 1}).then(value => {
+                done();
+            });
+        });
+
+        it('should get token', (done) => {
+            request(app)
+                .post('/v1/users/login')
+                .send({ email: 'toto@toto.fr' })
+                .end((err, res) => {
+                    if (err) done(err);
+                    res.status.should.equal(200);
+                    should.exist(res.body);
+                    done();
                 });
         });
     });

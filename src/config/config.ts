@@ -5,7 +5,9 @@ module.exports = {
         database: "postgres",
         host: "localhost",
         dialect: 'postgres',
-        port: 5432
+        port: 5432,
+        private: "test/ressources/private.key",
+        public: "test/ressources/public.key"
     },
     test: {
         username: "postgres",
@@ -13,7 +15,9 @@ module.exports = {
         database: "urigin",
         host: "localhost",
         dialect: 'postgres',
-        port: 5432
+        port: 5432,
+        private: "test/ressources/private.key",
+        public: "test/ressources/public.key"
     },
     production: {
         username: process.env.DB_USERNAME,
@@ -21,6 +25,8 @@ module.exports = {
         database: process.env.DB_NAME,
         port: process.env.DB_PORT,
         host: process.env.DB_HOSTNAME,
+        private: process.env.PRIVATE_KEY,
+        public: process.env.PUBLIC_KEY,
         dialect: 'postgres'
     }
 };
