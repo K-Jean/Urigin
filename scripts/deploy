@@ -1,5 +1,6 @@
 #!/bin/bash
 
+npm run swagger
 npm run gh-pages
 
 docker build --build-arg VCS_REF=`git rev-parse --short HEAD` -t ainz/urigin .
