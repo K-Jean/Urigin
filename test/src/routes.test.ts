@@ -26,16 +26,25 @@ describe('Users Test case', function() {
 
     describe('GET users', function() {
         this.timeout(60000);
+        let tokens;
 
         before((done) => {
-            models.users.create({"username": "toto", "email": "toto@toto.fr", "role" : 0}).then(value => {
-                done();
+            models.users.create({"username": "toto", "email": "toto@toto.fr", "role" : 2}).then(value => {
+                request(app)
+                    .post('/v1/users/login')
+                    .send({ email: 'toto@toto.fr' })
+                    .end((err, res) => {
+                        if (err) done(err);
+                        tokens = res.body;
+                        done();
+                    });
             });
         });
 
         it('should return one user', (done) => {
             request(app)
                 .get('/v1/users')
+                .set('Authorization', 'Bearer ' + tokens)
                 .end((err, res) => {
                     if (err) done(err);
                     res.status.should.equal(200);
@@ -105,6 +114,7 @@ describe('Users Test case', function() {
                     if (err) done(err);
                     res.status.should.equal(200);
                     should.exist(res.body);
+                    console.log(res.body);
                     done();
                 });
         });
