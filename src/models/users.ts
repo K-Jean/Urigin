@@ -11,5 +11,18 @@ module.exports = (sequelize, DataTypes) => {
         }
     });
 
+    User.associate = function (models) {
+        models.users.belongsToMany(models.games, {
+            through:  "users_games"
+        });
+        models.users.hasMany(models.comments);
+        models.users.belongsToMany(models.users, {
+            through: {
+                model: models.relations
+            },
+            as: "other"
+        });
+    };
+
     return User;
 };

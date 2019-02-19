@@ -113,7 +113,7 @@ describe('Users Test case', function() {
     afterEach( (done) => {
         models.users.destroy({
             where: {},
-            truncate: true
+            truncate: {cascade : true}
         }).then(value => {
             done();
         })
