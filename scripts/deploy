@@ -1,4 +1,7 @@
 #!/bin/bash
+
+npm run gh-pages
+
 docker build --build-arg VCS_REF=`git rev-parse --short HEAD` -t ainz/urigin .
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 docker push ainz/urigin
