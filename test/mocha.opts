@@ -4,4 +4,4 @@
 --exit
 --bail
 --full-trace
-src/test/*.test.ts
+test/src/*.test.ts

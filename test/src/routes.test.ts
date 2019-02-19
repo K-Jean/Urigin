@@ -1,7 +1,7 @@
 //Our app, express
-import {app} from "../index"
+import {app} from "../../src"
 import request from 'supertest'
-import {models} from "../models"
+import {models} from "../../src/models"
 
 const chai = require('chai');
 let chaiJsonEqual = require('chai-json-equal');
