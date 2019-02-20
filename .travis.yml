@@ -1,0 +1,29 @@
+language: node_js
+
+notifications:
+  slack: polytechparis-aju9563:hJZu47o2rdMjuko1rehVcQ8N
+
+node_js:
+  - "node"
+
+before_script:
+  - psql -c 'create database urigin;' -U postgres
+
+script:
+  - npm install nyc -g
+  - npm install codecov -g
+  - npm test
+
+after_success:
+  - npm run coverage
+  - codecov
+
+services:
+  - postgresql
+  - docker
+
+deploy:
+  provider: script
+  script: bash ./scripts/deploy
+  on:
+    branch: master

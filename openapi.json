@@ -1,0 +1,165 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Urigin",
+    "license": {
+      "name": "MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/v1"
+    }
+  ],
+  "paths": {
+    "/users/login": {
+      "post": {
+        "summary": "Get your authentification token",
+        "operationId": "login",
+        "requestBody": {
+          "description": "User identification",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "tags": [
+          "users"
+        ],
+        "responses": {
+          "200": {
+            "description": "connexion token"
+          },
+          "404": {
+            "description": "error occured in server side",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UriginError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "summary": "Get all user",
+        "operationId": "getusers",
+        "tags": [
+          "users"
+        ],
+        "security": [
+          {
+            "bearerAuth": [
+              "admin"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UriginError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access token does not have the required scope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UriginError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "error occured in server side",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UriginError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "responses": {
+      "UnauthorizedError": {
+        "description": "Access token is missing or invalid"
+      }
+    },
+    "schemas": {
+      "UriginError": {
+        "required": [
+          "description"
+        ],
+        "properties": {
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "User": {
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "mail": {
+            "type": "string"
+          },
+          "role": {
+            "type": "integer"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "name": "express",
+  "version": "1.0.0",
+  "description": "Install dependencies with `npm install`",
+  "main": "dist/index.js",
+  "dependencies": {
+    "@types/mocha": "^5.2.6",
+    "express": "^4.16.4",
+    "jsonwebtoken": "^8.4.0",
+    "pg": "^7.8.0",
+    "pg-hstore": "^2.3.2",
+    "reflect-metadata": "^0.1.13",
+    "sequelize": "^4.42.0",
+    "sequelize-typescript": "^0.6.7",
+    "typescript": "^3.3.3"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-json-equal": "0.0.1",
+    "coveralls": "^3.0.2",
+    "mocha": "^5.2.0",
+    "nyc": "^13.3.0",
+    "source-map-support": "^0.5.10",
+    "supertest": "^3.0.0",
+    "swagger-repo": "^2.0.0-rc.11",
+    "ts-node": "^8.0.2"
+  },
+  "scripts": {
+    "test": "nyc mocha",
+    "swagger": "swagger-repo build -o web_deploy",
+    "gh-pages": "swagger-repo gh-pages",
+    "coverage": "nyc report --reporter=text-lcov > coverage.lcov"
+  },
+  "nyc": {
+    "extension": [
+      ".ts",
+      ".tsx"
+    ],
+    "reporter": [
+      "text-summary",
+      "html"
+    ],
+    "sourceMap": true,
+    "instrument": true
+  },
+  "author": "",
+  "license": "ISC"
+}
