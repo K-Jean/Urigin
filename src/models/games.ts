@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         }
     });
     Game.associate = function (models) {
-        models.games.hasMany(models.comments);
+        models.games.hasMany(models.comments,{onDelete:'cascade'});
         models.games.hasMany(models.types);
         models.games.belongsToMany(models.users, {
             through:  "users_games",
