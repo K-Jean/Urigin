@@ -91,9 +91,6 @@
         "security": [
           {
             "bearerAuth": [
-              "user",
-              "creator",
-              "moderator",
               "admin"
             ]
           }
@@ -185,6 +182,16 @@
               }
             }
           },
+          "409": {
+            "description": "user already exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UriginError"
+                }
+              }
+            }
+          },
           "500": {
             "description": "error in the server side",
             "content": {
@@ -216,59 +223,26 @@
         "tags": [
           "users"
         ],
-        "security": [
-          {
-            "bearerAuth": [
-              "user",
-              "creator",
-              "moderator",
-              "admin"
-            ]
-          }
-        ],
         "responses": {
           "200": {
             "description": "a user",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/User"
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "username": {
+                      "type": "string"
+                    }
+                  }
                 }
               }
             }
           },
-          "401": {
-            "description": "Not authenticated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UriginError"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden, you don't have enough rights",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UriginError"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "user not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UriginError"
-                }
-              }
-            }
-          },
-          "498": {
-            "description": "Your token is invalid or expired",
+          "500": {
+            "description": "internal server error",
             "content": {
               "application/json": {
                 "schema": {
@@ -1320,12 +1294,25 @@
             }
           }
         }
-      },
+      }
+    },
+    "/games/{gameId}": {
       "put": {
         "summary": "update a game",
         "operationId": "update a game",
         "tags": [
           "games"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "gameId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the game to get"
+          }
         ],
         "security": [
           {
@@ -1395,9 +1382,7 @@
             }
           }
         }
-      }
-    },
-    "/games/{gameId}": {
+      },
       "delete": {
         "summary": "delete a game",
         "operationId": "delete a game",
