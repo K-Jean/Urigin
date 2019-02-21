@@ -12,4 +12,4 @@ router.post('/',common.checkRole(Roles.CREATOR),common.post(models.types));
 
 router.put('/',common.checkRole(Roles.CREATOR),common.put(models.types));
 
-module.exports = router;
+export default router;

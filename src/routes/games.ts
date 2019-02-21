@@ -27,4 +27,4 @@ router.put('/{gameId}/comment/{commentId}',common.isAuthenticate(), common.check
         }
     });
 });
-module.exports = router;
+export default router;

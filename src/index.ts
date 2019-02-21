@@ -1,6 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
-import * as user from "./routes/users";
+import user from "./routes/users";
 
 export const app = express();
 let port = 3000;

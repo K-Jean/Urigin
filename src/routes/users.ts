@@ -65,4 +65,4 @@ router.put('/:id/relations',common.isAuthenticate(),function(request,response){
 router.put('/:id/games',common.isAuthenticate(),function(request,response){
 
 });
-module.exports = router;
+export default router;
