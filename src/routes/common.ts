@@ -101,9 +101,9 @@ export function getByRelation(models, relation, attributes, pkName) {
                 }
                 let result;
 
-                if (isIterable(objects[relation["as"]])) {
+                if (isIterable(objects)) {
                     result = [];
-                    for (let obj of objects[relation["as"]]) {
+                    for (let obj of objects) {
                         let res = new Object();
                         for (let attribute of attributes) {
                             res[attribute] = obj[attribute];
@@ -114,12 +114,10 @@ export function getByRelation(models, relation, attributes, pkName) {
                 } else {
                     result = new Object();
                     for (let attribute of attributes) {
-                        result[attribute] = objects[relation["as"]][attribute];
+                        result[attribute] = objects[attribute];
                     }
                 }
-                let ret = {};
-                ret[relation["as"]] = result;
-                response.json(ret);
+                response.json(result);
             });
         })
     }
