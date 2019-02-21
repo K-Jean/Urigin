@@ -91,34 +91,36 @@ export function deleteFunc(models,conditions){
         });
     }
 }
-export function getByRelation(models, relation, attributes) {
+export function getByRelation(models, relation, attributes, pkName) {
     return function (request, response) {
-        models.findByPk(request.params.id, {include: [relation]}).then(function (objects) {
-            if (objects == null){
-                response.status(404).json({description: UriginError.OBJECT_NOT_FOUND});
-                return;
-            }
-            let result;
+        models.findByPk(request.params[pkName]).then(function (objects) {
+            objects[relation]().then(objects => {
+                if (objects == null){
+                    response.status(404).json({description: UriginError.OBJECT_NOT_FOUND});
+                    return;
+                }
+                let result;
 
-            if (isIterable(objects[relation["as"]])) {
-                result = [];
-                for (let obj of objects[relation["as"]]) {
-                    let res = new Object();
-                    for (let attribute of attributes) {
-                        res[attribute] = obj[attribute];
+                if (isIterable(objects[relation["as"]])) {
+                    result = [];
+                    for (let obj of objects[relation["as"]]) {
+                        let res = new Object();
+                        for (let attribute of attributes) {
+                            res[attribute] = obj[attribute];
+                        }
+
+                        result.push(res);
                     }
-
-                    result.push(res);
+                } else {
+                    result = new Object();
+                    for (let attribute of attributes) {
+                        result[attribute] = objects[relation["as"]][attribute];
+                    }
                 }
-            } else {
-                result = new Object();
-                for (let attribute of attributes) {
-                    result[attribute] = objects[relation["as"]][attribute];
-                }
-            }
-            let ret = {};
-            ret[relation["as"]] = result;
-            response.json(ret);
+                let ret = {};
+                ret[relation["as"]] = result;
+                response.json(ret);
+            });
         })
     }
 }

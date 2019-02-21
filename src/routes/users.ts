@@ -13,8 +13,8 @@ const router = express.Router();
 router.get('/', common.isAuthenticate(), common.checkRole(Roles.ADMIN), common.get(models.users,["id", "username", "role"]));
 // TODO : TEST
 router.get('/:userId',common.getByPk('userId',models.users,["id","username"]));
-router.get('/:id/relations', common.checkId('id',models.users), common.getByRelation(models.users,{model:models.relations, as:'relations'},['otherId','isBlocked','createAt','updatedAt']));
-router.get('/:id/games', common.getByRelation(models.users,{model: models.games, as: 'games'}, ["name","score","favorite","createAt"]));
+router.get('/:userId/relations', common.checkId('id',models.users), common.getByRelation(models.users,'getRelations',['otherId','isBlocked','createAt','updatedAt'], 'userId'));
+router.get('/:userId/games', common.getByRelation(models.users,'getGames', ["name","score","favorite","createAt"], 'userId'));
 
 router.post('/',common.filterBody({"email" : "true","username" : "true","password" : "true"}),(request, response) => {
     request.body.role = Roles.USER;
@@ -40,7 +40,11 @@ router.post('/login',common.filterBody({"email" : "true","password" : "true"}), 
             } else {
                 response.status(400).json({description: UriginError.PASSWORD_INVALID});
             }
+        }).catch(err => {
+            if(err) response.status(500).json({description: UriginError.DECRYPTION_ERROR});
         });
+    }).catch(err => {
+        if(err) response.status(500).json({description: UriginError.ERROR_WITH_DATABASE});
     });
 });
 

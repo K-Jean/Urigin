@@ -9,9 +9,9 @@ let router  = express.Router();
 
 router.get('/', common.get(models.games,["name", "description","createdAt","updatedAt"]));
 router.get('/:gameId', common.getByPk('gameId',models.games,["name", "description","createdAt","updatedAt"]));
-router.get('/:gameId/types', common.getByRelation(models.games,{model: models.types, as: 'types'}, ["name","description"]));
-router.get('/:gameId/users', common.getByRelation(models.games,{model: models.users, as: 'users'}, ["username"]));
-router.get('/:gameId/comments', common.getByRelation(models.games,{model: models.comments, as: 'comments'}, ["content","createdAt","updatedAt"]));
+router.get('/:gameId/types', common.getByRelation(models.games,'getTypes', ["name","description"], "gameId"));
+router.get('/:gameId/users', common.getByRelation(models.games, 'getUsers', ["username"], "gameId"));
+router.get('/:gameId/comments', common.getByRelation(models.games,'getComments', ["content","createdAt","updatedAt"], "gameId"));
 
 router.post('/',common.isAuthenticate(),common.checkRole(Roles.CREATOR), (req,rep) => {
     req.body.creatorId = req.decoded.id;
@@ -19,18 +19,14 @@ router.post('/',common.isAuthenticate(),common.checkRole(Roles.CREATOR), (req,re
 });
 
 router.post('/:gameId/comments', common.isAuthenticate(), function(req,res){
-        models.comments.create(req.body).then(function(comment){
-    models.games.findByPk(req.params.gameId).then(function(obj){
-            obj.addComments(comment)
-        });
-    });
+    req.body.userId = req.decoded.id;
+    req.body.gameId = req.params.gameId;
+    return common.post(models.comments)(req,res);
 });
+
 router.post('/:gameId/types',common.isAuthenticate(),common.checkRole(Roles.CREATOR),common.checkId('gameId',models.games,{model: models.users, as:'users'}),function (request, response) {
-    models.games.findByPk(request.params.gameId).then(function(objects1){
-        models.types.findByPk(request.body['typeId']).then(function(objects){
-            return objects1['addTypes'](objects);
-        });
-    });
+    request.body.gameId = request.params.gameId;
+    return common.post(models.types)(request,response);
 });
 
 router.put('/:gameId',common.filterBody({"description": "true"}),common.isAuthenticate(), common.checkRole(Roles.CREATOR), common.checkId('gameId',models.games,{model: models.users, as:'creator'}) , common.putByPk(models.games,"gameId"));

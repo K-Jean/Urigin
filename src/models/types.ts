@@ -14,7 +14,11 @@ module.exports = (sequelize, DataTypes) => {
         }
     });
     Type.associate = function (models) {
-        models.comments.belongsTo(models.games);
+        models.types.belongsToMany(models.games, {
+            through:  "types_games",
+            as: "games",
+            onDelete:'cascade'
+        });
     };
     return Type;
 };
