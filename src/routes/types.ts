@@ -13,5 +13,5 @@ router.post('/',common.isAuthenticate(),common.checkRole(Roles.CREATOR),common.p
 
 router.put('/:typeId',common.isAuthenticate(),common.checkRole(Roles.CREATOR),common.putByPk(models.types,"typeId"));
 
-router.delete('/:id',common.isAuthenticate(),common.checkRole(Roles.CREATOR),common.deleteFunc(models.types,[{id:"id"}]));
+router.delete('/:id',common.isAuthenticate(),common.checkRole(Roles.CREATOR),common.deleteFunc(models.types,{id:"id"}));
 export default router;

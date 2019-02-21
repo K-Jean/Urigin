@@ -72,13 +72,13 @@ export function putByPk(models, pkName) {
 export function deleteFunc(models,conditions){
     return (req,res)=>{
         let cond = {};
-        for(let key in Object.keys(conditions)){
-            cond[key] = req.body[conditions[key]];
+        for(let key in conditions){
+            cond[key] = req.params[conditions[key]];
         }
         models.destroy({
            where:cond
         }).then(()=>{
-            return res.status(200);
+            res.status(200).json('OK');
         });
     }
 }
