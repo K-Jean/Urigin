@@ -376,6 +376,79 @@
             }
           }
         }
+      },
+      "delete": {
+        "summary": "delete user",
+        "operationId": "delete your information",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the user to get"
+          }
+        ],
+        "tags": [
+          "users"
+        ],
+        "security": [
+          {
+            "bearerAuth": [
+              "user",
+              "creator",
+              "moderator",
+              "admin"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "operation successful"
+          },
+          "401": {
+            "description": "Not authenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UriginError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden, you don't have enough rights",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UriginError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "user not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UriginError"
+                }
+              }
+            }
+          },
+          "498": {
+            "description": "Your token is invalid or expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UriginError"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/users/{userId}/games": {
@@ -740,91 +813,6 @@
           },
           "404": {
             "description": "relation or user not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UriginError"
-                }
-              }
-            }
-          },
-          "498": {
-            "description": "Your token is invalid or expired",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UriginError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/users/{userId}/comments": {
-      "get": {
-        "summary": "Get all comments from a user",
-        "operationId": "get comments from a user",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "userId",
-            "schema": {
-              "type": "integer"
-            },
-            "required": true,
-            "description": "Numeric ID of the user to get"
-          }
-        ],
-        "tags": [
-          "users"
-        ],
-        "security": [
-          {
-            "bearerAuth": [
-              "user",
-              "creator",
-              "moderator",
-              "admin"
-            ]
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "list of comments",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Comment"
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Not authenticated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UriginError"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden, you don't have enough rights",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UriginError"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "user not found",
             "content": {
               "application/json": {
                 "schema": {
