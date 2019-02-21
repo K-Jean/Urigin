@@ -115,6 +115,243 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UriginError'
+  '/users/{userId}':
+    get:
+      summary: Get a specific user
+      operationId: get a user
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the user to get
+      tags:
+        - users
+      security:
+        - bearerAuth:
+            - user
+            - creator
+            - moderator
+            - admin
+      responses:
+        '200':
+          description: a user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '403':
+          description: 'Forbidden, you don''t have enough rights'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '498':
+          description: Your token is invalid or expired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+    put:
+      summary: update your user parameter
+      operationId: put your information
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the user to get
+      requestBody:
+        description: new informations
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                email:
+                  type: string
+                username:
+                  type: string
+                password:
+                  type: string
+                role:
+                  type: integer
+                  description: Only if you are admin
+      tags:
+        - users
+      security:
+        - bearerAuth:
+            - user
+            - creator
+            - moderator
+            - admin
+      responses:
+        '200':
+          description: operation successful
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '403':
+          description: 'Forbidden, you don''t have enough rights'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '498':
+          description: Your token is invalid or expired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+  '/users/{userId}/games':
+    get:
+      summary: Get all game from a user
+      operationId: get game from a user
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the user to get
+      tags:
+        - users
+      security:
+        - bearerAuth:
+            - user
+            - creator
+            - moderator
+            - admin
+      responses:
+        '200':
+          description: list of games
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Game'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '403':
+          description: 'Forbidden, you don''t have enough rights'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '498':
+          description: Your token is invalid or expired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+  '/users/{userId}/comments':
+    get:
+      summary: Get all comments from a user
+      operationId: get comments from a user
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the user to get
+      tags:
+        - users
+      security:
+        - bearerAuth:
+            - user
+            - creator
+            - moderator
+            - admin
+      responses:
+        '200':
+          description: list of comments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comment'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '403':
+          description: 'Forbidden, you don''t have enough rights'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '498':
+          description: Your token is invalid or expired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+  '/users/{userId}/relations':
+    get:
+      summary: Get all relations from a user
+      operationId: get relations from a user
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the user to get
+      tags:
+        - users
+      security:
+        - bearerAuth:
+            - user
+            - creator
+            - moderator
+            - admin
+      responses:
+        '200':
+          description: list of relations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Relation'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '403':
+          description: 'Forbidden, you don''t have enough rights'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '498':
+          description: Your token is invalid or expired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
 components:
   securitySchemes:
     bearerAuth:
@@ -147,3 +384,44 @@ components:
         password:
           type: string
           writeOnly: true
+    Relation:
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          readOnly: true
+        value:
+          type: integer
+          description: 0 Friend / 1 Blocked
+    Game:
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: integer
+          readOnly: true
+        description:
+          type: string
+          description: Only if you are the creator
+        createdAt:
+          type: string
+          description: creation date of this game
+          readOnly: true
+    Comment:
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        content:
+          type: string
+        createdAt:
+          type: string
+          description: creation date of this comment
+          readOnly: true
+        updatedAt:
+          type: string
+          description: updated date of this comment
+          readOnly: true
