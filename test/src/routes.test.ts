@@ -2,6 +2,7 @@
 import {app} from "../../src"
 import request from 'supertest'
 import {models} from "../../src/models"
+import {createUserAndGetToken} from "./common";
 
 const chai = require('chai');
 let chaiJsonEqual = require('chai-json-equal');
@@ -13,6 +14,9 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({
     extended: false
 }));
+
+var passwordEncrypted = "$2b$10$isKh52YxNPNWJa7UvM3Gw.cITm.Vm/D9YAnzHFdydqDolV6K1cyhu";
+var password = "password";
 
 //describe() declares a test suite
 describe('Users Test case', function() {
@@ -28,17 +32,8 @@ describe('Users Test case', function() {
         this.timeout(60000);
         let tokens;
 
-        before((done) => {
-            models.users.create({"username": "toto", "email": "toto@toto.fr", "role" : 2}).then(value => {
-                request(app)
-                    .post('/v1/users/login')
-                    .send({ email: 'toto@toto.fr' })
-                    .end((err, res) => {
-                        if (err) done(err);
-                        tokens = res.body;
-                        done();
-                    });
-            });
+        before(async () => {
+            tokens = await createUserAndGetToken(app, request);
         });
 
         it('should return one user', (done) => {
@@ -56,32 +51,13 @@ describe('Users Test case', function() {
 
     });
 
-    describe('POST users', function() {
-        this.timeout(60000);
-
-        it('should insert user in BDD', (done) => {
-            request(app)
-                .post('/v1/users')
-                .send({"username": "arthur", "email": "gigolo@carotte.fr"})
-                .end((err, res) => {
-                    if (err) done(err);
-                    models.users.findOne({ where: {email: 'gigolo@carotte.fr'} }).then(value => {
-                        if(value == null) {
-                            done("l'utilisateur n'a pas été enregistré en bdd")
-                        }
-                        done();
-                    });
-                });
-        });
-    });
-
     describe('POST users with trying force Role', function() {
         this.timeout(60000);
 
         it('should insert user in BDD with role 0', (done) => {
             request(app)
                 .post('/v1/users')
-                .send({"username": "arthur", "email": "gigolo@carotte.fr", "role":2})
+                .send({"username": "arthur", "email": "gigolo@carotte.fr", "password": "toto", "role":2})
                 .end((err, res) => {
                     if (err) done(err);
                     models.users.findOne({ where: {email: 'gigolo@carotte.fr'} }).then(value => {
@@ -93,29 +69,6 @@ describe('Users Test case', function() {
                         }
                         done();
                     });
-                });
-        });
-    });
-
-    describe('GET users tokens', function() {
-        this.timeout(60000);
-
-        before((done) => {
-            models.users.create({"username": "toto", "email": "toto@toto.fr", "role" : 1}).then(value => {
-                done();
-            });
-        });
-
-        it('should get token', (done) => {
-            request(app)
-                .post('/v1/users/login')
-                .send({ email: 'toto@toto.fr' })
-                .end((err, res) => {
-                    if (err) done(err);
-                    res.status.should.equal(200);
-                    should.exist(res.body);
-                    console.log(res.body);
-                    done();
                 });
         });
     });

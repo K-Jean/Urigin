@@ -2,6 +2,7 @@ import express from "express";
 
 let router = express.Router();
 import {Security} from "../security/security";
+import {UriginError} from "../common/UriginError";
 
 export function get(models, attributes) {
     return function (request, response) {
@@ -76,6 +77,18 @@ export function post(models) {
     }
 }
 
+export function checkBody(parameters) {
+    return (req, res, next) => {
+        for(let parameter of parameters){
+            if(!req.body.hasOwnProperty(parameter)){
+                return res.status(400).json({description: UriginError.PARAMETER_MANDATORY.replace("%d", parameter)});
+            }
+        }
+        next();
+    }
+}
+
+
 export function checkRole(roleMin) {
     return function secureAPI(req, res, next) {
 
@@ -92,7 +105,7 @@ export function checkRole(roleMin) {
             // verifies secret and checks exp
             Security.verifyToken(token, function (err, decoded) {
                 if (err) {
-                    return res.status(401).json({description: 'Failed to authenticate token.'});
+                    return res.status(498).json({description: UriginError.TOKEN_INVALID});
                 } else {
                     // if everything is good, save to request for use in other routes
                     req.decoded = decoded;
@@ -100,7 +113,7 @@ export function checkRole(roleMin) {
                     if(req.decoded.role >= roleMin) {
                         next();
                     } else {
-                        return res.status(403).json({description: 'You don\'t have enough perogative.'});
+                        return res.status(403).json({description: UriginError.FORBIDDEN});
                     }
                 }
             });
@@ -109,7 +122,7 @@ export function checkRole(roleMin) {
             // if there is no token
             // return an error
             return res.status(401).send({
-                description: 'No token provided.'
+                description: UriginError.NO_TOKEN
             });
 
         }

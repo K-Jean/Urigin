@@ -12,7 +12,7 @@ paths:
       summary: Get your authentification token
       operationId: login
       requestBody:
-        description: User identification 
+        description: User identification
         required: true
         content:
           application/json:
@@ -31,8 +31,14 @@ paths:
       responses:
         '200':
           description: connexion token
-        '404':
-          description: error occured in server side
+        '400':
+          description: error with the body
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UriginError"
+        '500':
+          description: error in the server side
           content:
             application/json:
               schema:
@@ -44,7 +50,7 @@ paths:
       tags:
         - users
       security:
-        - bearerAuth: [admin]
+        - bearerAuth: [user,creator,moderator,admin]
       responses:
         '200':
           description: List users
@@ -53,7 +59,7 @@ paths:
               schema:
                 type: array
                 items:
-                   $ref: "#/components/schemas/User"
+                  $ref: "#/components/schemas/User"
         '401':
           description: Not authenticated
           content:
@@ -61,13 +67,46 @@ paths:
               schema:
                 $ref: "#/components/schemas/UriginError"
         '403':
-          description: Access token does not have the required scope
+          description: Forbidden, you don't have enough rights
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/UriginError"
-        '404':
-          description: error occured in server side
+        '498':
+          description: Your token is invalid or expired
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UriginError"
+    post:
+      summary: Create new user
+      operationId: createUsers
+      tags:
+        - users
+      requestBody:
+        description: new user
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                email:
+                  type: string
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: your user was created
+        '400':
+          description: error with the body
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UriginError"
+        '500':
+          description: error in the server side
           content:
             application/json:
               schema:
@@ -91,8 +130,19 @@ components:
     User:
       properties:
         id:
+          # Returned by GET, not used in POST/PUT/PATCH
           type: integer
-        mail:
+          readOnly: true
+        email:
+          # Used in POST/PUT/PATCH, not returned by GET
           type: string
-        role: 
+          writeOnly: true
+        username:
+          type: string
+        role:
           type: integer
+          description: Only if your are admin
+        password:
+          # Used in POST/PUT/PATCH, not returned by GET
+          type: string
+          writeOnly: true
