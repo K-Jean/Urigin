@@ -6,8 +6,8 @@ module.exports = (sequelize, DataTypes) => {
         favorite:{
             type: DataTypes.BOOLEAN
         },
-        buyAt: {
-            type: DataTypes.DATE
+        createAt:{
+            type : DataTypes.DATE
         }
 
     });

@@ -17,7 +17,8 @@ module.exports = (sequelize, DataTypes) => {
         models.games.hasMany(models.comments);
         models.games.hasMany(models.types);
         models.games.belongsToMany(models.users, {
-            through:  "users_games"
+            through:  "users_games",
+            as: "creator"
         });
     };
     return Game;
