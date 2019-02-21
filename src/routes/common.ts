@@ -146,3 +146,17 @@ export function checkRole(role) {
         }
     };
 }
+
+export function checkId(pkItem,models, relation){
+    return (req, res, next)=>{
+        models.findByPk(req.params[pkItem], {include: [relation]}).then(function (objects) {
+            if(objects[relation['as']]['id'] == req.decoded.id){
+                next();
+            }else{
+                return res.status(403).send({
+                    description: 'Access denied.'
+                });
+            }
+        });
+    }
+}
