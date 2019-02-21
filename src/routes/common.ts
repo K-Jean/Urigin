@@ -55,7 +55,23 @@ export function post(models) {
         })
     }
 }
-
+export function putAssos(models,conditions){
+    return function (request, response) {
+        let cond = {};
+        for(let key in conditions){
+            cond[key] = request.params[conditions[key]];
+        }
+        models.findAll({where : cond}).then(function (objects) {
+            if (objects.length == 0){
+                response.status(404).json({description: UriginError.OBJECT_NOT_FOUND});
+                return;
+            }
+            objects[0].update(request.body).then((result, rejected) => {
+                response.json("OK");
+            });
+        })
+    }
+}
 export function putByPk(models, pkName) {
     return function (request, response) {
         models.findByPk(request.params[pkName]).then(function (objects) {

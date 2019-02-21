@@ -14,7 +14,7 @@ router.get('/', common.isAuthenticate(), common.checkRole(Roles.ADMIN), common.g
 // TODO : TEST
 router.get('/:userId',common.getByPk('userId',models.users,["id","username"]));
 router.get('/:userId/relations', common.checkId('id',models.users), common.getByRelation(models.users,'getRelations',['otherId','isBlocked','createAt','updatedAt'], 'userId'));
-router.get('/:userId/games', common.getByRelation(models.users,'getGames', ["name","score","favorite","createAt"], 'userId'));
+router.get('/:userId/games', common.getByRelation(models.users,'getGame', ["name","score","favorite","createAt"], 'userId'));
 
 router.post('/',common.filterBody({"email" : "true","username" : "true","password" : "true"}),(request, response) => {
     request.body.role = Roles.USER;
@@ -66,8 +66,8 @@ router.put('/:userId',common.isAuthenticate(),common.checkId('userId',models.use
 router.post('/:userId/relations/',common.isAuthenticate(),common.checkId('userId',models.users),common.actionOnRelation(models.users, models.users,'addOther','userId', 'userId'));
 router.post('/:userId/games/',common.isAuthenticate(),common.checkId('userId',models.users),common.actionOnRelation(models.users,models.games,'addGame','userId','gameId'));
 
-router.put('/:userId/relations/:relationId',common.isAuthenticate(),common.checkId('userId',models.users),common.putByPk(models.relations,'relationId'));
-router.put('/:userId/games/:gameId',common.isAuthenticate(),common.checkId('userId',models.users),common.putByPk(models.games,'gameId'));
+router.put('/:userId/relations/:relationId',common.isAuthenticate(),common.checkId('userId',models.users),common.putAssos(models.relations,{userId:'userId',otherId:'relationId'}));
+router.put('/:userId/games/:gameId',common.isAuthenticate(),common.checkId('userId',models.users),common.putAssos(models.users_games,{gameId:'gameId',userId:'userId'}));
 
 // delete
 router.delete('/:userId',common.isAuthenticate(),common.checkRole(Roles.USER,Roles.CREATOR,Roles.ADMIN),common.checkId('userId',models.users, (req,res,next)=>{
