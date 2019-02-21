@@ -1,6 +1,7 @@
 import {Security} from "../security/security";
 import {UriginError} from "../common/UriginError";
 import {UniqueConstraintError} from "sequelize";
+import {models} from "../models";
 
 export function get(models, attributes) {
     return function (request, response) {
@@ -120,6 +121,30 @@ export function getByRelation(models, relation, attributes, pkName) {
                 response.json(result);
             });
         })
+    }
+}
+
+export function actionOnRelation(models, models2, relation, pkName, pkName2) {
+    return function (request, response) {
+        models.findByPk(request.params[pkName]).then(object => {
+            if (object == null){
+                response.status(404).json({description: UriginError.OBJECT_NOT_FOUND});
+                return;
+            }
+            models2.findByPk(request.body[pkName2]).then(function (type) {
+                if (type == null) response.status(500).json({description: UriginError.ERROR_WITH_DATABASE});
+                else {
+                    object[relation](type);
+                    response.json("OK");
+                }
+            }).catch(err => {
+                if (err instanceof UniqueConstraintError) {
+                    response.status(409).json({description: UriginError.OBJECT_ALREADY_EXIST});
+                } else {
+                    response.status(500).json({description: UriginError.ERROR_WITH_DATABASE});
+                }
+            });
+        });
     }
 }
 
