@@ -1400,7 +1400,7 @@ components:
           readOnly: true
         name:
           # Returned by GET, not used in POST/PUT/PATCH
-          type: integer
+          type: string
           readOnly: true
         description:
           type: string
@@ -1409,6 +1409,11 @@ components:
           # Returned by GET, not used in POST/PUT/PATCH
           type: string
           description: creation date of this game
+          readOnly: true
+        updatedAt:
+          # Returned by GET, not used in POST/PUT/PATCH
+          type: string
+          description: update date of this game
           readOnly: true
     Comment:
       properties:

@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
     Game.associate = function (models) {
         models.games.hasMany(models.comments,{onDelete:'cascade'});
         models.games.hasMany(models.types);
-        models.games.belongsTo(models.users);
+        models.games.belongsTo(models.users, {as: 'creator'});
         models.games.belongsToMany(models.users, {
             through:  "users_games",
             as: "gamers"

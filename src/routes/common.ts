@@ -131,13 +131,18 @@ function isIterable(obj) {
     return typeof obj[Symbol.iterator] === 'function';
 }
 
-export function checkBody(parameters) {
+export function filterBody(jsonfilter) {
     return (req, res, next) => {
-        for (let parameter of parameters) {
-            if (!req.body.hasOwnProperty(parameter)) {
+        Object.keys(req.body).forEach(parameter => {
+            if(!jsonfilter.hasOwnProperty(parameter)) {
+                delete req.body[parameter];
+            }
+        });
+        Object.keys(jsonfilter).forEach(parameter => {
+            if (!req.body.hasOwnProperty(parameter) && jsonfilter[parameter]) {
                 return res.status(400).json({description: UriginError.PARAMETER_MANDATORY.replace("%d", parameter)});
             }
-        }
+        });
         next();
     }
 }

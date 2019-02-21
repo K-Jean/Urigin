@@ -16,7 +16,7 @@ router.get('/:userId',common.getByPk('userId',models.users,["id","username"]));
 router.get('/:id/relations', common.checkId('id',models.users), common.getByRelation(models.users,{model:models.relations, as:'relations'},['otherId','isBlocked','createAt','updatedAt']));
 router.get('/:id/games', common.getByRelation(models.users,{model: models.games, as: 'games'}, ["name","score","favorite","createAt"]));
 
-router.post('/',common.checkBody(["email","username","password"]),(request, response) => {
+router.post('/',common.filterBody({"email" : "true","username" : "true","password" : "true"}),(request, response) => {
     request.body.role = Roles.USER;
     bcrypt.hash(request.body.password, 10).then(hash => {
         request.body.password = hash;
@@ -26,7 +26,7 @@ router.post('/',common.checkBody(["email","username","password"]),(request, resp
         if(err) response.status(500).json({description: UriginError.ENCRYPTION_ERROR});
     });
 });
-router.post('/login',common.checkBody(["email","password"]), function (request, response) {
+router.post('/login',common.filterBody({"email" : "true","password" : "true"}), function (request, response) {
     models.users.findOne({where: {email: request.body.email}}).then(value => {
         if (value == null) {
             response.status(400).json({description: UriginError.NO_USER_FOUND});
