@@ -48,8 +48,18 @@
           "200": {
             "description": "connexion token"
           },
-          "404": {
-            "description": "error occured in server side",
+          "400": {
+            "description": "error with the body",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UriginError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "error in the server side",
             "content": {
               "application/json": {
                 "schema": {
@@ -71,6 +81,9 @@
         "security": [
           {
             "bearerAuth": [
+              "user",
+              "creator",
+              "moderator",
               "admin"
             ]
           }
@@ -100,7 +113,7 @@
             }
           },
           "403": {
-            "description": "Access token does not have the required scope",
+            "description": "Forbidden, you don't have enough rights",
             "content": {
               "application/json": {
                 "schema": {
@@ -109,8 +122,61 @@
               }
             }
           },
-          "404": {
-            "description": "error occured in server side",
+          "498": {
+            "description": "Your token is invalid or expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UriginError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create new user",
+        "operationId": "createUsers",
+        "tags": [
+          "users"
+        ],
+        "requestBody": {
+          "description": "new user",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "username": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "your user was created"
+          },
+          "400": {
+            "description": "error with the body",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UriginError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "error in the server side",
             "content": {
               "application/json": {
                 "schema": {
@@ -150,13 +216,23 @@
       "User": {
         "properties": {
           "id": {
-            "type": "integer"
+            "type": "integer",
+            "readOnly": true
           },
-          "mail": {
+          "email": {
+            "type": "string",
+            "writeOnly": true
+          },
+          "username": {
             "type": "string"
           },
           "role": {
-            "type": "integer"
+            "type": "integer",
+            "description": "Only if your are admin"
+          },
+          "password": {
+            "type": "string",
+            "writeOnly": true
           }
         }
       }
