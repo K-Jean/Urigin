@@ -76,7 +76,7 @@ router.delete('/:userId',common.isAuthenticate(),common.checkRole(Roles.USER,Rol
     }else{
         return res.status(403).json({description: UriginError.FORBIDDEN});
     }
-}),common.deleteFunc(models.users,[{id:'userId'}]));
+}),common.deleteFunc(models.users,{id:'userId'}));
 router.delete('/:userId/relations/:relationId',common.isAuthenticate(),common.checkId('userId',models.users),checkId('relationId',models.relations,{model: models.users, as:'users'}),
     deleteFunc(models.relations,[{id:'relationId'}]));
 router.delete('/:userId/games/:gameId',common.isAuthenticate(),common.checkId('userId',models.users),checkId('gameId',models.games,{model: models.users, as:'users'}),
