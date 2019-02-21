@@ -37,6 +37,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UriginError'
+        '404':
+          description: user not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
         '500':
           description: error in the server side
           content:
@@ -153,6 +159,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UriginError'
+        '404':
+          description: user not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
         '498':
           description: Your token is invalid or expired
           content:
@@ -208,6 +220,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UriginError'
+        '404':
+          description: user not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
         '498':
           description: Your token is invalid or expired
           content:
@@ -250,6 +268,12 @@ paths:
                 $ref: '#/components/schemas/UriginError'
         '403':
           description: 'Forbidden, you don''t have enough rights'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '404':
+          description: user not found
           content:
             application/json:
               schema:
@@ -300,6 +324,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UriginError'
+        '404':
+          description: user not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
         '498':
           description: Your token is invalid or expired
           content:
@@ -342,6 +372,192 @@ paths:
                 $ref: '#/components/schemas/UriginError'
         '403':
           description: 'Forbidden, you don''t have enough rights'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '404':
+          description: user not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '498':
+          description: Your token is invalid or expired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+    post:
+      summary: Create a new relation with another user
+      operationId: post relations from a user
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the user to get
+      tags:
+        - users
+      security:
+        - bearerAuth:
+            - user
+            - creator
+            - moderator
+            - admin
+      requestBody:
+        description: new relation
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                userId:
+                  type: string
+                isBlocked:
+                  type: boolean
+      responses:
+        '200':
+          description: creation success
+        '400':
+          description: error with the body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '403':
+          description: 'Forbidden, you don''t have enough rights'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '404':
+          description: user not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '498':
+          description: Your token is invalid or expired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+  '/users/{userId}/relations/{relationId}':
+    put:
+      summary: update your relation with another user
+      operationId: update relations
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the user to get
+        - in: path
+          name: relationId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of your relation
+      tags:
+        - users
+      security:
+        - bearerAuth:
+            - user
+            - creator
+            - moderator
+            - admin
+      requestBody:
+        description: updated relation
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                isBlocked:
+                  type: boolean
+      responses:
+        '200':
+          description: updated success
+        '400':
+          description: error with the body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '403':
+          description: 'Forbidden, you don''t have enough rights'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '404':
+          description: relation or user not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '498':
+          description: Your token is invalid or expired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+    delete:
+      summary: delete your relation with another user
+      operationId: delete relations
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the user to get
+        - in: path
+          name: relationId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of your relation
+      tags:
+        - users
+      security:
+        - bearerAuth:
+            - user
+            - creator
+            - moderator
+            - admin
+      responses:
+        '200':
+          description: deleted success
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '403':
+          description: 'Forbidden, you don''t have enough rights'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '404':
+          description: relation or user not found
           content:
             application/json:
               schema:
@@ -392,9 +608,8 @@ components:
         username:
           type: string
           readOnly: true
-        value:
-          type: integer
-          description: 0 Friend / 1 Blocked
+        isBlocked:
+          type: boolean
     Game:
       properties:
         id:
