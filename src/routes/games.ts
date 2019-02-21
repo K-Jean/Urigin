@@ -15,7 +15,7 @@ router.get('/:gameId/comments', common.getByRelation(models.games,{model: models
 
 router.post('/',common.isAuthenticate(),common.checkRole(Roles.CREATOR), (req,rep) => {
     req.body.userId = req.decoded.id;
-    return common.post(models.games);
+    return common.post(models.games)(req,rep);
 });
 
 router.post('/:gameId/comments', common.isAuthenticate(), function(req,res){
@@ -57,5 +57,5 @@ router.delete('/:gameId/comments/:commentId',common.isAuthenticate(),common.chec
         return res.status(403).json({description: UriginError.FORBIDDEN});
     }
 }),common.deleteFunc(models.games,[{id:'gameId'}]));
-router.detele('/:gameId/types/:typeId',common.isAuthenticate(),common.checkRole(Roles.CREATOR),common.checkId('gameId',models.games,{model: models.users, as:'users'}),common.deleteFunc(models.comments,[{id:'id'}]));
+router.delete('/:gameId/types/:typeId',common.isAuthenticate(),common.checkRole(Roles.CREATOR),common.checkId('gameId',models.games,{model: models.users, as:'users'}),common.deleteFunc(models.comments,[{id:'id'}]));
 export default router;
