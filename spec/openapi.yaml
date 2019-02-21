@@ -412,4 +412,4 @@ components:
           # Returned by GET, not used in POST/PUT/PATCH
           type: string
           description: updated date of this comment
-          readOnly: true    
+          readOnly: true
