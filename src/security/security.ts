@@ -5,13 +5,13 @@ let config = require("../config/config")[env];
 
 // http://travistidwell.com/blog/2013/09/06/an-online-rsa-public-and-private-key-generator/
 // use 'utf8' to get string instead of byte array
-var privateKEY = fs.readFileSync(config.private, 'utf8'); // to sign JWT
-var publicKEY = fs.readFileSync(config.public, 'utf8'); 	// to verify JWT
+const privateKEY = fs.readFileSync(config.private, 'utf8'); // to sign JWT
+const publicKEY = fs.readFileSync(config.public, 'utf8'); 	// to verify JWT
 
 // To make the JWT more efficient we need 3 things
-var i = 'Urigin corp';			// Issuer (Software organization who issues the token)
-var a = 'http://urigin.fr';	// Audience (Domain within which this token will live and function)
-var s = "client@client.com";
+const i = 'Urigin corp';			// Issuer (Software organization who issues the token)
+const a = 'http://urigin.fr';	// Audience (Domain within which this token will live and function)
+const s = "client@client.com";
 
 export class Security {
 

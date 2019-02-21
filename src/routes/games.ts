@@ -1,9 +1,9 @@
 import express from "express";
 import {models} from "../models";
 import {Roles} from "../common/roles";
+import * as common from "./common";
 
 let router  = express.Router();
-let common = require('./common');
 
 router.get('/', common.get(models.games,["name", "description","createdAt","updatedAt"]));
 router.get('/:id/types', common.getByRelation(models.games,{model: models.types, as: 'types'}, ["name","description"]));

@@ -3,13 +3,13 @@ import {models} from "../models";
 import {Security} from "../security/security";
 import {Roles} from "../common/roles";
 import {UriginError} from "../common/UriginError";
+import * as common from "./common";
+import bcrypt from "bcrypt";
 
-let router = express.Router();
-let common = require('./common');
-const bcrypt = require('bcrypt');
+const router = express.Router();
 
 // Seuls les admins peuvent avoir les informations sur les utilisateurs
-router.get('/', common.checkRole(Roles.ADMIN), common.get(models.users,["username", "email"]));
+router.get('/', common.isAuthenticate(), common.checkRole(Roles.ADMIN), common.get(models.users,["username", "email"]));
 
 router.post('/',common.checkBody(["email","username","password"]),(request, response) => {
     request.body.role = Roles.USER;

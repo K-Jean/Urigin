@@ -15,9 +15,6 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 
-var passwordEncrypted = "$2b$10$isKh52YxNPNWJa7UvM3Gw.cITm.Vm/D9YAnzHFdydqDolV6K1cyhu";
-var password = "password";
-
 //describe() declares a test suite
 describe('Users Test case', function() {
     this.timeout(60000);

@@ -5,6 +5,7 @@ import {models} from "../../src/models"
 import {Security} from "../../src/security/security";
 import {UriginError} from "../../src/common/UriginError";
 import {createUser} from "./common";
+import {Roles} from "../../src/common/roles";
 
 const chai = require('chai');
 let chaiJsonEqual = require('chai-json-equal');
@@ -47,7 +48,7 @@ describe('Authentification Test case', function() {
                     should.exist(res.body);
                     Security.verifyToken(res.body, ((err1, decoded) => {
                         if(err1) done("le decodage du token n'a pas marché");
-                        decoded.role.should.equal(2);
+                        decoded.role.should.equal(Roles.ADMIN);
                         decoded.username.should.equal("toto");
                         done();
                     }));

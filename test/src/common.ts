@@ -1,10 +1,11 @@
 import {models} from "../../src/models";
+import {Roles} from "../../src/common/roles";
 
 var passwordEncrypted = "$2b$10$isKh52YxNPNWJa7UvM3Gw.cITm.Vm/D9YAnzHFdydqDolV6K1cyhu";
 var password = "password";
 
 export async function createUser(){
-    await models.users.create({"username": "toto", "email": "toto@toto.fr", "role" : 2, "password": passwordEncrypted});
+    await models.users.create({"username": "toto", "email": "toto@toto.fr", "role" : Roles.ADMIN, "password": passwordEncrypted});
 }
 export async function createUserAndGetToken(app, request){
     await createUser();
