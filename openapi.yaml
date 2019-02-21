@@ -284,6 +284,190 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UriginError'
+    post:
+      summary: Add a new game in your library
+      operationId: add game in your library
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the user to get
+      tags:
+        - users
+      security:
+        - bearerAuth:
+            - user
+            - creator
+            - moderator
+            - admin
+      requestBody:
+        description: add new game
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                gameId:
+                  type: integer
+                favorite:
+                  type: boolean
+                score:
+                  type: integer
+      responses:
+        '200':
+          description: creation success
+        '400':
+          description: error with the body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '403':
+          description: 'Forbidden, you don''t have enough rights'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '404':
+          description: user not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '498':
+          description: Your token is invalid or expired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+  '/users/{userId}/games/{gameId}':
+    put:
+      summary: update your game favorite or scored
+      operationId: update games relation
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the user to get
+        - in: path
+          name: gameId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of your game
+      tags:
+        - users
+      security:
+        - bearerAuth:
+            - user
+            - creator
+            - moderator
+            - admin
+      requestBody:
+        description: updated relation
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                favorite:
+                  type: boolean
+                score:
+                  type: integer
+      responses:
+        '200':
+          description: updated success
+        '400':
+          description: error with the body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '403':
+          description: 'Forbidden, you don''t have enough rights'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '404':
+          description: game or user not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '498':
+          description: Your token is invalid or expired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+    delete:
+      summary: delete your game from your library
+      operationId: delete game relation
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the user to get
+        - in: path
+          name: gameId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of your game
+      tags:
+        - users
+      security:
+        - bearerAuth:
+            - user
+            - creator
+            - moderator
+            - admin
+      responses:
+        '200':
+          description: deleted success
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '403':
+          description: 'Forbidden, you don''t have enough rights'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '404':
+          description: relation or user not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '498':
+          description: Your token is invalid or expired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
   '/users/{userId}/comments':
     get:
       summary: Get all comments from a user
