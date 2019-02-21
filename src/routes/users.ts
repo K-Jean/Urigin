@@ -77,8 +77,13 @@ router.delete('/:userId',common.isAuthenticate(),common.checkRole(Roles.USER,Rol
         return res.status(403).json({description: UriginError.FORBIDDEN});
     }
 }),common.deleteFunc(models.users,{id:'userId'}));
-router.delete('/:userId/relations/:relationId',common.isAuthenticate(),common.checkId('userId',models.users),checkId('relationId',models.relations,{model: models.users, as:'users'}),
-    deleteFunc(models.relations,[{id:'relationId'}]));
-router.delete('/:userId/games/:gameId',common.isAuthenticate(),common.checkId('userId',models.users),checkId('gameId',models.games,{model: models.users, as:'users'}),
-    deleteFunc(models.games,[{id:'gameId'}]));
+router.delete('/:userId/relations/:relationId',common.isAuthenticate(),common.checkId('userId',models.users),(req,res) => {
+    req.body.relationId = req.params.relationId;
+    return common.actionOnRelation(models.users, models.users, "removeOther", "userId", "relationId")(req,res);
+});
+router.delete('/:userId/games/:gameId',common.isAuthenticate(),common.checkId('userId',models.users),(req,res) => {
+    req.body.gameId = req.params.gameId;
+    return common.actionOnRelation(models.users, models.games, "removeGame", "userId", "gameId")(req,res);
+});
+
 export default router;
