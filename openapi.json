@@ -2375,7 +2375,7 @@
             "readOnly": true
           },
           "name": {
-            "type": "integer",
+            "type": "string",
             "readOnly": true
           },
           "description": {
@@ -2385,6 +2385,11 @@
           "createdAt": {
             "type": "string",
             "description": "creation date of this game",
+            "readOnly": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "update date of this game",
             "readOnly": true
           }
         }
