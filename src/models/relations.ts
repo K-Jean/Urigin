@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
     let Relation = sequelize.define('relations', {
-        value :{
-            type : DataTypes.STRING
+        isBlocked :{
+            type : DataTypes.BOOLEAN
         },
         createdAt: {
             type: DataTypes.DATE
