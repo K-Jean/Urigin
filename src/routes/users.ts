@@ -8,11 +8,11 @@ let router = express.Router();
 let common = require('./common');
 const bcrypt = require('bcrypt');
 
-router.get('/', common.checkRole(Roles.ADMIN), common.get(models.users, ["username", "email"]));
+// Seuls les admins peuvent avoir les informations sur les utilisateurs
+router.get('/', common.checkRole(Roles.ADMIN), common.get(models.users,["username", "email"]));
 
 router.post('/',common.checkBody(["email","username","password"]),(request, response) => {
-    request.body.role = 0;
-    console.log(request.body);
+    request.body.role = Roles.USER;
     bcrypt.hash(request.body.password, 10).then(hash => {
         request.body.password = hash;
         // Store hash in your password DB.
@@ -39,5 +39,30 @@ router.post('/login',common.checkBody(["email","password"]), function (request, 
         });
     });
 });
+// TODO : TEST
+router.get('/:id/games', common.getByRelation(models.users,{model: models.games, as: 'games'}, ["name","score","favorite","createAt"]));
+router.get('/:id/comments', common.getByRelation(models.users,{model: models.comments, as: 'comments'}, ["content","createdAt","updatedAt"]));
+router.get('/:id/relations', function(request,response){
+    // TODO : LE CODER
+});
 
+router.post('/:id/comments',common.isAuthenticate(),function(request,response){
+
+});
+router.post('/:id/relations',common.isAuthenticate(),function(request,response){
+
+});
+router.post('/:id/games',common.isAuthenticate(),function(request,response){
+
+});
+
+router.put('/:id/comments',common.isAuthenticate(),function(request,response){
+
+});
+router.put('/:id/relations',common.isAuthenticate(),function(request,response){
+
+});
+router.put('/:id/games',common.isAuthenticate(),function(request,response){
+
+});
 module.exports = router;

@@ -89,7 +89,38 @@ export function checkBody(parameters) {
 }
 
 
-export function checkRole(roleMin) {
+export function isAuthenticate(){
+    return function secureAPI(req, res, next) {
+
+        // check header or url parameters or post parameters for token
+        var token = req.headers['x-access-token'] || req.headers['authorization']; // Express headers are auto converted to lowercase
+        if (token.startsWith('Bearer ')) {
+            // Remove Bearer from string
+            token = token.slice(7, token.length);
+        }
+        // decode token
+        if (token) {
+
+            // verifies secret and checks exp
+            Security.verifyToken(token, function (err, decoded) {
+                if (err) {
+                    return res.status(401).json({description: 'Failed to authenticate token.'});
+                } else {
+                    next();
+                }
+            });
+        } else {
+            // if there is no token
+            // return an error
+            return res.status(401).send({
+                description: 'No token provided.'
+            });
+
+        }
+    };
+}
+
+export function checkRole(role) {
     return function secureAPI(req, res, next) {
 
         // check header or url parameters or post parameters for token
@@ -110,7 +141,7 @@ export function checkRole(roleMin) {
                     // if everything is good, save to request for use in other routes
                     req.decoded = decoded;
 
-                    if(req.decoded.role >= roleMin) {
+                    if(req.decoded.role == role) {
                         next();
                     } else {
                         return res.status(403).json({description: UriginError.FORBIDDEN});
@@ -127,4 +158,18 @@ export function checkRole(roleMin) {
 
         }
     };
+}
+
+export function checkId(pkItem,models, relation){
+    return (req, res, next)=>{
+        models.findByPk(req.params[pkItem], {include: [relation]}).then(function (objects) {
+            if(objects[relation['as']]['id'] == req.decoded.id){
+                next();
+            }else{
+                return res.status(403).send({
+                    description: 'Access denied.'
+                });
+            }
+        });
+    }
 }
