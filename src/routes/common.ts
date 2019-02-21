@@ -54,8 +54,7 @@ export function post(models) {
         })
     }
 }
-
-export function postAssos(models, functionName, fKName) {
+export function postUserAssos(models,functionName,fKName){
     return function (request, response) {
         models.findByPk(request.decoded.id).then(function (objects1) {
             models.findByPk(request.body[fKName]).then(function (objects) {
@@ -79,7 +78,19 @@ export function putByPk(models, pkName) {
         })
     }
 }
-
+export function deleteFunc(models,conditions){
+    return (req,res)=>{
+        let cond = {};
+        for(let key in Object.keys(conditions)){
+            cond[key] = req.body[conditions[key]];
+        }
+        models.destroy({
+           where:cond
+        }).then(()=>{
+            return res.status(200);
+        });
+    }
+}
 export function getByRelation(models, relation, attributes) {
     return function (request, response) {
         models.findByPk(request.params.id, {include: [relation]}).then(function (objects) {
@@ -188,7 +199,7 @@ export function checkId(pkItem, models, relation?, callbackFail?) {
                     next();
                 } else {
                     if (callbackFail) {
-                        callbackFail();
+                        callbackFail(req,res,next);
                     } else {
                         return res.status(403).send({
                             description: UriginError.FORBIDDEN

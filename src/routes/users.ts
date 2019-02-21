@@ -5,6 +5,7 @@ import {Roles} from "../common/roles";
 import {UriginError} from "../common/UriginError";
 import * as common from "./common";
 import bcrypt from "bcrypt";
+import {checkId, deleteFunc} from "./common";
 
 const router = express.Router();
 
@@ -58,9 +59,22 @@ router.put('/:userId',common.isAuthenticate(),common.checkId('userId',models.use
 });
 
 // Table d'assos
-router.post('/:userId/relations/',common.isAuthenticate(),common.checkId('userId',models.users),common.postAssos(models.relations,'addOther','userId'));
-router.post('/:userId/games/',common.isAuthenticate(),common.checkId('userId',models.users),common.postAssos(models.games,'addGame','gameId'));
+router.post('/:userId/relations/',common.isAuthenticate(),common.checkId('userId',models.users),common.postUserAssos(models.relations,'addOther','userId'));
+router.post('/:userId/games/',common.isAuthenticate(),common.checkId('userId',models.users),common.postUserAssos(models.games,'addGame','gameId'));
 
 router.put('/:userId/relations/:relationId',common.isAuthenticate(),common.checkId('userId',models.users),common.putByPk(models.relations,'relationId'));
 router.put('/:userId/games/:gameId',common.isAuthenticate(),common.checkId('userId',models.users),common.putByPk(models.games,'gameId'));
+
+// delete
+router.delete('/:userId',common.isAuthenticate(),common.checkRole(Roles.USER,Roles.ADMIN),common.checkId('userId',models.users, (req,res,next)=>{
+    if(req.decoded.role == Roles.ADMIN){
+        next();
+    }else{
+        return res.status(403).json({description: UriginError.FORBIDDEN});
+    }
+}),common.deleteFunc(models.users,[{id:'userId'}]));
+router.delete('/:userId/relations/:relationId',common.isAuthenticate(),common.checkId('userId',models.users),checkId('relationId',models.relations,{model: models.users, as:'users'}),
+    deleteFunc(models.relations,[{id:'relationId'}]));
+router.delete('/:userId/games/:gameId',common.isAuthenticate(),common.checkId('userId',models.users),checkId('gameId',models.games,{model: models.users, as:'users'}),
+    deleteFunc(models.games,[{id:'gameId'}]));
 export default router;
