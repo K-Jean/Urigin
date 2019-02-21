@@ -97,7 +97,15 @@ export function getByRelation(models, relation, attributes, pkName) {
                     for (let obj of objects) {
                         let res = new Object();
                         for (let attribute of attributes) {
-                            res[attribute] = obj[attribute];
+                            if(typeof attribute  == "string"){
+                                res[attribute] = obj[attribute];
+                            } else {
+                                Object.keys(attribute).forEach(key => {
+                                    for (let subattribute of attribute[key]) {
+                                        res[subattribute] = obj[key][subattribute];
+                                    }
+                                });
+                            }
                         }
 
                         result.push(res);

@@ -13,7 +13,7 @@ const router = express.Router();
 router.get('/', common.isAuthenticate(), common.checkRole(Roles.ADMIN), common.get(models.users,["id", "username", "role"]));
 // TODO : TEST
 router.get('/:userId',common.getByPk('userId',models.users,["id","username"]));
-router.get('/:userId/relations', common.checkId('id',models.users), common.getByRelation(models.users,'getRelations',['otherId','isBlocked','createAt','updatedAt'], 'userId'));
+router.get('/:userId/relations', common.isAuthenticate(), common.checkId('userId',models.users), common.getByRelation(models.users,'getOther',['id','username',{ 'relations': ['isBlocked']},'createAt','updatedAt'], 'userId'));
 router.get('/:userId/games', common.getByRelation(models.users,'getGames', ["name","score","favorite","createAt"], 'userId'));
 
 router.post('/',common.filterBody({"email" : "true","username" : "true","password" : "true"}),(request, response) => {
