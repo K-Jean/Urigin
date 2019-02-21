@@ -11,6 +11,6 @@ router.get('/:id',common.getByPk('id',models.types,["name", "description","creat
 
 router.post('/',common.checkRole(Roles.CREATOR),common.post(models.types));
 
-router.put('/:id',common.checkRole(Roles.CREATOR),common.put(models.types));
+router.put('/:typeId',common.checkRole(Roles.CREATOR),common.putByPk(models.types,"typeId"));
 
 export default router;

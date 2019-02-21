@@ -6,16 +6,19 @@ import * as common from "./common";
 let router  = express.Router();
 
 router.get('/', common.get(models.games,["name", "description","createdAt","updatedAt"]));
-router.get('/:id', common.getByPk('id',models.games,["name", "description","createdAt","updatedAt"]));
-router.get('/:id/types', common.getByRelation(models.games,{model: models.types, as: 'types'}, ["name","description"]));
-router.get('/:id/users', common.getByRelation(models.games,{model: models.users, as: 'users'}, ["username"]));
-router.get('/:id/comments', common.getByRelation(models.games,{model: models.comments, as: 'comments'}, ["content","createdAt","updatedAt"]));
+router.get('/:gameId', common.getByPk('gameId',models.games,["name", "description","createdAt","updatedAt"]));
+router.get('/:gameId/types', common.getByRelation(models.games,{model: models.types, as: 'types'}, ["name","description"]));
+router.get('/:gameId/users', common.getByRelation(models.games,{model: models.users, as: 'users'}, ["username"]));
+router.get('/:gameId/comments', common.getByRelation(models.games,{model: models.comments, as: 'comments'}, ["content","createdAt","updatedAt"]));
 
-router.post('/',common.checkRole(Roles.CREATOR),common.post(models.games));
-router.post('/:id/comments', common.isAuthenticate(), common.post(models.games));
+router.post('/',common.isAuthenticate(), common.checkRole(Roles.CREATOR),common.post(models.games));
+router.post('/:gameId/comments', common.isAuthenticate(), common.post(models.games));
 
-router.put('/:id',common.checkRole(Roles.CREATOR), common.checkId('id',models.games,{model: models.users, as:'users'}) ,common.put(models.games));
-router.put('/{gameId}/comments/{commentId}',common.isAuthenticate(), common.checkId('commentId',models.comments,{model: models.users, as:'users'}), (request, response)=>{
+router.put('/:gameId',common.isAuthenticate(), common.checkRole(Roles.CREATOR), common.checkId('gameId',models.games,{model: models.users, as:'creator'}) , (req,rep) => {
+    req.body.userId = req.decoded.id;
+    return common.putByPk(models.games,"gameId")
+    });
+router.put('/:gameId/comments/:commentId',common.isAuthenticate(), common.checkId('commentId',models.comments,{model: models.users, as:'users'}), (request, response)=>{
     models.comments.findByPk(request.params['commentId'], {include: ['games']}).then(function (objects) {
         if(objects['games']['id'] == request.decoded.gameId){
             objects.update(request.body).then((result, rejected) => {

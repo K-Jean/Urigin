@@ -40,7 +40,8 @@ describe('Users Test case', function() {
                 .end((err, res) => {
                     if (err) done(err);
                     res.status.should.equal(200);
-                    res.body[0].should.jsonEqual({"username": "toto", "email": "toto@toto.fr"});
+                    res.body[0].username.should.equal("toto");
+                    should.exist(res.body[0].id);
                     done();
                 });
         });
