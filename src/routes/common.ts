@@ -22,7 +22,41 @@ export function get(models, attributes) {
         })
     }
 }
+export function getByPk(pkItem,models,attributes){
+    return function (request, response) {
+        models.findByPk(request.param[pkItem]).then(function (objects) {
+            let result = [];
 
+            for (let obj of objects) {
+                let res = new Object();
+                for (let attribute of attributes) {
+                    res[attribute] = obj[attribute];
+                }
+
+                result.push(res);
+            }
+
+            response.json(result);
+        })
+    }
+}
+export function post(models) {
+    return function (request, response) {
+        models.create(request.body).then(function (objects) {
+            response.json(objects);
+        })
+    }
+}
+export function postAssos(models,functionName,fKName){
+    return function (request, response) {
+        models.findByPk(request.decoded.id).then(function(objects1){
+            models.findByPk(request.body[fKName]).then(function(objects){
+                delete request.body[fKName];
+                return objects1[functionName](objects,{through:request.body});
+            });
+        });
+    }
+}
 export function put(models) {
     return function (request, response) {
         models.findByPk(request.params.id).then(function (objects) {
@@ -32,7 +66,15 @@ export function put(models) {
         })
     }
 }
-
+export function putByPk(models,pkName){
+    return function (request, response) {
+        models.findByPk(request.params[pkName]).then(function (objects) {
+            objects.update(request.body).then((result, rejected) => {
+                response.json(result);
+            });
+        })
+    }
+}
 export function getByRelation(models, relation, attributes) {
     return function (request, response) {
         models.findByPk(request.params.id, {include: [relation]}).then(function (objects) {
@@ -68,15 +110,6 @@ function isIterable(obj) {
     }
     return typeof obj[Symbol.iterator] === 'function';
 }
-
-export function post(models) {
-    return function (request, response) {
-        models.create(request.body).then(function (objects) {
-            response.json(objects);
-        })
-    }
-}
-
 export function checkBody(parameters) {
     return (req, res, next) => {
         for(let parameter of parameters){
@@ -160,16 +193,36 @@ export function checkRole(role) {
     };
 }
 
-export function checkId(pkItem,models, relation){
+export function checkId(pkItem,models, relation?,callbackFail?){
     return (req, res, next)=>{
-        models.findByPk(req.params[pkItem], {include: [relation]}).then(function (objects) {
-            if(objects[relation['as']]['id'] == req.decoded.id){
-                next();
-            }else{
-                return res.status(403).send({
-                    description: 'Access denied.'
-                });
-            }
-        });
+        if(relation){
+            models.findByPk(req.params[pkItem], {include: [relation]}).then(function (objects) {
+                if (objects[relation['as']]['id'] == req.decoded.id) {
+                    next();
+                } else {
+                    if (callbackFail) {
+                        callbackFail();
+                    } else {
+                        return res.status(403).send({
+                            description: 'Access denied.'
+                        });
+                    }
+                }
+            });
+        }else{
+            models.findByPk(req.params[pkItem]).then(function (objects) {
+                if (objects['id'] == req.decoded.id) {
+                    next();
+                } else {
+                    if (callbackFail) {
+                        callbackFail();
+                    } else {
+                        return res.status(403).send({
+                            description: 'Access denied.'
+                        });
+                    }
+                }
+            });
+        }
     }
 }

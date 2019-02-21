@@ -10,6 +10,10 @@ const bcrypt = require('bcrypt');
 
 // Seuls les admins peuvent avoir les informations sur les utilisateurs
 router.get('/', common.checkRole(Roles.ADMIN), common.get(models.users,["username", "email"]));
+// TODO : TEST
+router.get('/:id',common.getByPk('id',models.users,["username"]));
+router.get('/:id/games', common.getByRelation(models.users,{model: models.games, as: 'games'}, ["name","score","favorite","createAt"]));
+router.get('/:id/relations', common.checkId('id',models.users), common.getByRelation(models.users,{model:models.relations, as:'relations'},['otherId','isBlocked','createAt','updatedAt']));
 
 router.post('/',common.checkBody(["email","username","password"]),(request, response) => {
     request.body.role = Roles.USER;
@@ -21,7 +25,6 @@ router.post('/',common.checkBody(["email","username","password"]),(request, resp
         if(err) response.status(500).json({description: UriginError.ENCRYPTION_ERROR});
     });
 });
-
 router.post('/login',common.checkBody(["email","password"]), function (request, response) {
     models.users.findOne({where: {email: request.body.email}}).then(value => {
         if (value == null) {
@@ -39,30 +42,13 @@ router.post('/login',common.checkBody(["email","password"]), function (request, 
         });
     });
 });
-// TODO : TEST
-router.get('/:id/games', common.getByRelation(models.users,{model: models.games, as: 'games'}, ["name","score","favorite","createAt"]));
-router.get('/:id/comments', common.getByRelation(models.users,{model: models.comments, as: 'comments'}, ["content","createdAt","updatedAt"]));
-router.get('/:id/relations', function(request,response){
-    // TODO : LE CODER
-});
 
-router.post('/:id/comments',common.isAuthenticate(),function(request,response){
+router.put('/:id',common.isAuthenticate(),common.checkId('id',models.users),common.put(models.users));
 
-});
-router.post('/:id/relations',common.isAuthenticate(),function(request,response){
+// Table d'assos
+router.post('/:id/relations/',common.isAuthenticate(),common.checkId('id',models.users),common.postAssos(models.relations,'addOther','userId'));
+router.post('/:id/games/',common.isAuthenticate(),common.checkId('id',models.users),common.postAssos(models.games,'addGame','gameId'));
 
-});
-router.post('/:id/games',common.isAuthenticate(),function(request,response){
-
-});
-
-router.put('/:id/comments',common.isAuthenticate(),function(request,response){
-
-});
-router.put('/:id/relations',common.isAuthenticate(),function(request,response){
-
-});
-router.put('/:id/games',common.isAuthenticate(),function(request,response){
-
-});
+router.put('/{userId}/relations/{relationId}',common.isAuthenticate(),common.checkId('userId',models.users),common.putByPk(models.relations,'relationId'));
+router.put('/{userId}/games/{gameId}',common.isAuthenticate(),common.checkId('userId',models.users),common.putByPk(models.games,'gameId'));
 module.exports = router;
