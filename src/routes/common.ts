@@ -55,16 +55,6 @@ export function post(models) {
         })
     }
 }
-export function postUserAssos(models,functionName,fKName){
-    return function (request, response) {
-        models.findByPk(request.decoded.id).then(function (objects1) {
-            models.findByPk(request.body[fKName]).then(function (objects) {
-                delete request.body[fKName];
-                return objects1[functionName](objects, {through: request.body});
-            });
-        });
-    }
-}
 
 export function putByPk(models, pkName) {
     return function (request, response) {
@@ -134,7 +124,7 @@ export function actionOnRelation(models, models2, relation, pkName, pkName2) {
             models2.findByPk(request.body[pkName2]).then(function (type) {
                 if (type == null) response.status(500).json({description: UriginError.ERROR_WITH_DATABASE});
                 else {
-                    object[relation](type);
+                    object[relation](type, {through : request.body});
                     response.json("OK");
                 }
             }).catch(err => {

@@ -63,14 +63,14 @@ router.put('/:userId',common.isAuthenticate(),common.checkId('userId',models.use
 });
 
 // Table d'assos
-router.post('/:userId/relations/',common.isAuthenticate(),common.checkId('userId',models.users),common.postUserAssos(models.relations,'addOther','userId'));
-router.post('/:userId/games/',common.isAuthenticate(),common.checkId('userId',models.users),common.postUserAssos(models.games,'addGame','gameId'));
+router.post('/:userId/relations/',common.isAuthenticate(),common.checkId('userId',models.users),common.actionOnRelation(models.users, models.users,'addOther','userId', 'userId'));
+router.post('/:userId/games/',common.isAuthenticate(),common.checkId('userId',models.users),common.actionOnRelation(models.users,models.games,'addGame','userId','gameId'));
 
 router.put('/:userId/relations/:relationId',common.isAuthenticate(),common.checkId('userId',models.users),common.putByPk(models.relations,'relationId'));
 router.put('/:userId/games/:gameId',common.isAuthenticate(),common.checkId('userId',models.users),common.putByPk(models.games,'gameId'));
 
 // delete
-router.delete('/:userId',common.isAuthenticate(),common.checkRole(Roles.USER,Roles.ADMIN),common.checkId('userId',models.users, (req,res,next)=>{
+router.delete('/:userId',common.isAuthenticate(),common.checkRole(Roles.USER,Roles.CREATOR,Roles.ADMIN),common.checkId('userId',models.users, (req,res,next)=>{
     if(req.decoded.role == Roles.ADMIN){
         next();
     }else{
