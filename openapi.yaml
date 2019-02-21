@@ -1257,6 +1257,171 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UriginError'
+  /types:
+    get:
+      summary: Get all types
+      operationId: get all types
+      tags:
+        - types
+      responses:
+        '200':
+          description: list of types
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Type'
+    post:
+      summary: add new types
+      operationId: add types
+      tags:
+        - types
+      security:
+        - bearerAuth:
+            - user
+            - creator
+            - admin
+      requestBody:
+        description: add new types
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+      responses:
+        '200':
+          description: creation success
+        '400':
+          description: error with the body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '403':
+          description: 'Forbidden, you don''t have enough rights'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '498':
+          description: Your token is invalid or expired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+  '/types/{typeId}':
+    put:
+      summary: update a type
+      operationId: update a type
+      parameters:
+        - in: path
+          name: typeId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the type to get
+      tags:
+        - types
+      security:
+        - bearerAuth:
+            - user
+            - creator
+            - admin
+      requestBody:
+        description: update type
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Type'
+      responses:
+        '200':
+          description: update success
+        '400':
+          description: error with the body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '403':
+          description: 'Forbidden, you don''t have enough rights'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '404':
+          description: type not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '498':
+          description: Your token is invalid or expired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+    delete:
+      summary: delete a type
+      operationId: delete a type
+      parameters:
+        - in: path
+          name: typeId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the type to get
+      tags:
+        - types
+      security:
+        - bearerAuth:
+            - user
+            - creator
+            - admin
+      responses:
+        '200':
+          description: delete success
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '403':
+          description: 'Forbidden, you don''t have enough rights'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '404':
+          description: type not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
+        '498':
+          description: Your token is invalid or expired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UriginError'
 components:
   securitySchemes:
     bearerAuth:
