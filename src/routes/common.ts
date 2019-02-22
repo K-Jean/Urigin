@@ -15,16 +15,23 @@ export function get(models, attributes) {
         let limit = request.query.limit ? request.query.limit : 10;
         models.findAll({offset: start, limit: limit}).then(function (objects) {
             let result = [];
+            let resultQuery = [];
             for (let obj of objects) {
                 let res = new Object();
                 for (let attribute of attributes) {
                     res[attribute] = obj[attribute];
                 }
-                result.push(res);
+                resultQuery.push(res);
             }
+            result.push({result : resultQuery});
             if(objects.length == Math.abs(limit-start)){
                 result.push({
                     next: request.protocol + '://' + request.get('host') + request.baseUrl + request.path.substring(0, request.path.length-1) + "?start=" + Number(start+limit) + "&limit=" + limit
+                });
+            }
+            if(start != 0){
+                result.push({
+                    previous: request.protocol + '://' + request.get('host') + request.baseUrl + request.path.substring(0, request.path.length-1) + "?start=" + Number(start-limit) + "&limit=" + limit
                 });
             }
             response.json(result);
