@@ -1336,6 +1336,9 @@ components:
         id:
           type: integer
           readOnly: true
+        userId:
+          type: integer
+          readOnly: true
         content:
           type: string
         createdAt:
