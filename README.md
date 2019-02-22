@@ -9,6 +9,8 @@ Install dependencies with `npm install`
 
 Start at https://expressjs.com/en/starter/basic-routing.html to learn Express basics.
 
+documentation link : https://github.com/KurooUsagy/Urigin
+
 # Compiling
 
 To compile the application, just run `tsc` on the root folder, compiled JavaScript
