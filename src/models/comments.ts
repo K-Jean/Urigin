@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
     });
     Comment.associate = function (models) {
         models.comments.belongsTo(models.games);
-        //models.comments.belongsTo(models.users, {as : 'author'});
+        models.comments.belongsTo(models.users, {as : 'user'});
     };
     return Comment;
 };

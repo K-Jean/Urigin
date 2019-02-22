@@ -20,7 +20,7 @@ router.post('/', common.isAuthenticate(), common.checkRole(Roles.CREATOR), (req,
     return common.post(models.games)(req, rep);
 });
 router.post('/:gameId/comments', common.isAuthenticate(), function(req,res){
-    req.body.authorId = req.decoded.id;
+    req.body.userId = req.decoded.id;
     req.body.gameId = req.params.gameId;
     return common.post(models.comments)(req, res);
 });
@@ -34,7 +34,7 @@ router.put('/:gameId', common.filterBody({"description": "true"}), common.isAuth
     model: models.users,
     as: 'creator'
 }), common.putByPk(models.games, "gameId"));
-router.put('/:gameId/comments/:commentId',common.isAuthenticate(), common.checkId('commentId',models.comments,{model: models.users, as:'author'}), (request, response)=>{
+router.put('/:gameId/comments/:commentId',common.isAuthenticate(), common.checkId('commentId',models.comments,{model: models.users, as:'user'}), (request, response)=>{
     // Permet d'assurer que le commentaire correspond bien au jeu
     models.comments.findByPk(request.params['commentId'], {include: {model: models.games, as:'game'}}).then(function (objects) {
         if(objects['game']['id'] == request.params.gameId){
@@ -57,7 +57,7 @@ router.delete('/:gameId',common.isAuthenticate(),common.checkRole(Roles.CREATOR,
         return res.status(403).json({description: UriginError.FORBIDDEN});
     }
 }),common.deleteFunc(models.games,{id:'gameId'}));
-router.delete('/:gameId/comments/:commentId',common.isAuthenticate(),common.checkId('commentId',models.comments,{model: models.users, as:'author'}, (req,res,next)=>{
+router.delete('/:gameId/comments/:commentId',common.isAuthenticate(),common.checkId('commentId',models.comments,{model: models.users, as:'user'}, (req,res,next)=>{
     if(req.decoded.role == Roles.ADMIN){
         next();
     } else {
