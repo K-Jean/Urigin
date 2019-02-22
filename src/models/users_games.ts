@@ -2,7 +2,11 @@
 module.exports = (sequelize, DataTypes) => {
     let UserGame = sequelize.define('users_games',{
         score :{
-            type : DataTypes.INTEGER
+            type : DataTypes.INTEGER,
+            validate:{
+                min : 0,
+                max : 5
+            }
         },
         favorite:{
             type: DataTypes.BOOLEAN
