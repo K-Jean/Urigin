@@ -72,7 +72,7 @@ router.put('/:userId/relations/:relationId',common.isAuthenticate(),common.check
 router.put('/:userId/games/:gameId',common.isAuthenticate(),common.checkId('userId',models.users),common.putAssos(models.users_games,{gameId:'gameId',userId:'userId'}));
 
 // delete
-router.delete('/:userId',common.isAuthenticate(),common.checkRole(Roles.USER,Roles.CREATOR,Roles.ADMIN),common.checkId('userId',models.users, (req,res,next)=>{
+router.delete('/:userId',common.isAuthenticate(),common.checkRole(Roles.USER,Roles.CREATOR,Roles.ADMIN),common.checkId('userId',models.users, undefined,(req,res,next)=>{
     if(req.decoded.role == Roles.ADMIN){
         next();
     }else{

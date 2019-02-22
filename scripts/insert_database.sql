@@ -14,7 +14,7 @@ INSERT INTO public.types_games ("createdAt", "updatedAt", "gameId", "typeId") VA
 INSERT INTO public.types_games ("createdAt", "updatedAt", "gameId", "typeId") VALUES ('2019-02-21 22:56:25.015000', '2019-02-21 22:56:25.015000', 2, 1);
 
 INSERT INTO public.users_games (score, favorite, "createdAt", "updatedAt", "gameId", "userId") VALUES (20, true, '2019-02-22 09:32:54.227000', '2019-02-22 09:32:56.662000', 1, 1);
-INSERT INTO public.users_games (score, favorite, "createdAt", "updatedAt", "gameId", "userId") VALUES (4, null, '2019-02-22 09:33:16.055000', '2019-02-22 09:33:20.878000', 2, 1);
+INSERT INTO public.users_games (score, favorite, "createdAt", "updatedAt", "gameId", "userId") VALUES (4, false, '2019-02-22 09:33:16.055000', '2019-02-22 09:33:20.878000', 2, 1);
 
 INSERT INTO public.relations ("isBlocked", "createdAt", "updatedAt", "userId", "otherId") VALUES (true, '2019-02-21 23:17:13.008000', '2019-02-21 23:17:13.008000', 1, 3);
 
