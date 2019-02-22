@@ -53,6 +53,17 @@ paths:
     get:
       summary: Get all user
       operationId: getusers
+      parameters:
+        - in: query
+          name: start
+          schema:
+            type: integer
+          description: The number of items to skip before starting to collect the result set
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: The numbers of items to return
       tags:
         - users
       security:
@@ -64,9 +75,17 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/User'
+                properties:
+                  previous:
+                    type: string
+                    description: url to previous data
+                  next:
+                    type: string
+                    description: url to next data
+                  result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
         '401':
           description: Not authenticated
           content:
@@ -315,6 +334,8 @@ paths:
                   type: boolean
                 score:
                   type: integer
+                  minimum: 0
+                  maximum: 5
       responses:
         '200':
           description: creation success
@@ -377,6 +398,8 @@ paths:
                   type: boolean
                 score:
                   type: integer
+                  minimum: 0
+                  maximum: 5
       responses:
         '200':
           description: updated success
@@ -656,6 +679,17 @@ paths:
     get:
       summary: Get all games
       operationId: get games
+      parameters:
+        - in: query
+          name: start
+          schema:
+            type: integer
+          description: The number of items to skip before starting to collect the result set
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: The numbers of items to return
       tags:
         - games
       responses:
@@ -664,9 +698,17 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Game'
+                properties:
+                  previous:
+                    type: string
+                    description: url to previous data
+                  next:
+                    type: string
+                    description: url to next data
+                  result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Game'
         '404':
           description: game not found
           content:
@@ -1127,6 +1169,17 @@ paths:
     get:
       summary: Get all types
       operationId: get all types
+      parameters:
+        - in: query
+          name: start
+          schema:
+            type: integer
+          description: The number of items to skip before starting to collect the result set
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: The numbers of items to return
       tags:
         - types
       responses:
@@ -1135,9 +1188,17 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Type'
+                properties:
+                  previous:
+                    type: string
+                    description: url to previous data
+                  next:
+                    type: string
+                    description: url to next data
+                  result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Type'
     post:
       summary: add new types
       operationId: add types

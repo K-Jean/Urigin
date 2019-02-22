@@ -85,6 +85,24 @@
       "get": {
         "summary": "Get all user",
         "operationId": "getusers",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "start",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The number of items to skip before starting to collect the result set"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The numbers of items to return"
+          }
+        ],
         "tags": [
           "users"
         ],
@@ -101,9 +119,21 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/User"
+                  "properties": {
+                    "previous": {
+                      "type": "string",
+                      "description": "url to previous data"
+                    },
+                    "next": {
+                      "type": "string",
+                      "description": "url to next data"
+                    },
+                    "result": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/User"
+                      }
+                    }
                   }
                 }
               }
@@ -506,7 +536,9 @@
                     "type": "boolean"
                   },
                   "score": {
-                    "type": "integer"
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 5
                   }
                 }
               }
@@ -607,7 +639,9 @@
                     "type": "boolean"
                   },
                   "score": {
-                    "type": "integer"
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 5
                   }
                 }
               }
@@ -1069,6 +1103,24 @@
       "get": {
         "summary": "Get all games",
         "operationId": "get games",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "start",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The number of items to skip before starting to collect the result set"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The numbers of items to return"
+          }
+        ],
         "tags": [
           "games"
         ],
@@ -1078,9 +1130,21 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Game"
+                  "properties": {
+                    "previous": {
+                      "type": "string",
+                      "description": "url to previous data"
+                    },
+                    "next": {
+                      "type": "string",
+                      "description": "url to next data"
+                    },
+                    "result": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Game"
+                      }
+                    }
                   }
                 }
               }
@@ -1839,6 +1903,24 @@
       "get": {
         "summary": "Get all types",
         "operationId": "get all types",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "start",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The number of items to skip before starting to collect the result set"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The numbers of items to return"
+          }
+        ],
         "tags": [
           "types"
         ],
@@ -1848,9 +1930,21 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Type"
+                  "properties": {
+                    "previous": {
+                      "type": "string",
+                      "description": "url to previous data"
+                    },
+                    "next": {
+                      "type": "string",
+                      "description": "url to next data"
+                    },
+                    "result": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Type"
+                      }
+                    }
                   }
                 }
               }
