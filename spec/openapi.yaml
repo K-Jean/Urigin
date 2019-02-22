@@ -78,12 +78,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/UriginError"
-        '498':
-          description: Your token is invalid or expired
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UriginError"
     post:
       summary: Create new user
       operationId: createUsers
@@ -182,7 +176,7 @@ paths:
       tags:
         - users
       security:
-        - bearerAuth: [user, creator, moderator, admin]
+        - bearerAuth: [user, creator, admin]
       responses:
         '200':
           description: operation successful
@@ -200,12 +194,6 @@ paths:
                 $ref: "#/components/schemas/UriginError"
         '403':
           description: Forbidden, you don't have enough rights
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UriginError"
-        '498':
-          description: Your token is invalid or expired
           content:
             application/json:
               schema:
@@ -223,7 +211,7 @@ paths:
       tags:
         - users
       security:
-        - bearerAuth: [user, creator, moderator, admin]
+        - bearerAuth: [user, creator, admin]
       responses:
         '200':
           description: operation successful
@@ -241,12 +229,6 @@ paths:
                 $ref: "#/components/schemas/UriginError"
         '403':
           description: Forbidden, you don't have enough rights
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UriginError"
-        '498':
-          description: Your token is invalid or expired
           content:
             application/json:
               schema:
@@ -265,7 +247,7 @@ paths:
       tags:
         - users
       security:
-        - bearerAuth: [user, creator, moderator, admin]
+        - bearerAuth: [user, creator, admin]
       responses:
         '200':
           description: list of games
@@ -293,12 +275,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/UriginError"
-        '498':
-          description: Your token is invalid or expired
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UriginError"
     post:
       summary: Add a new game in your library
       operationId: add game in your library
@@ -312,7 +288,7 @@ paths:
       tags:
         - users
       security:
-        - bearerAuth: [user, creator, moderator, admin]
+        - bearerAuth: [user, creator, admin]
       requestBody:
         description: add new game
         required: true
@@ -353,12 +329,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/UriginError"
-        '498':
-          description: Your token is invalid or expired
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UriginError"
   /users/{userId}/games/{gameId}:
     put:
       summary: update your game favorite or scored
@@ -379,7 +349,7 @@ paths:
       tags:
         - users
       security:
-        - bearerAuth: [user, creator, moderator, admin]
+        - bearerAuth: [user, creator, admin]
       requestBody:
         description: updated relation
         required: true
@@ -418,12 +388,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/UriginError"
-        '498':
-          description: Your token is invalid or expired
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UriginError"
     delete:
       summary: delete your game from your library
       operationId: delete game relation
@@ -443,7 +407,7 @@ paths:
       tags:
         - users
       security:
-        - bearerAuth: [user, creator, moderator, admin]
+        - bearerAuth: [user, creator, admin]
       responses:
         '200':
           description: deleted success
@@ -465,12 +429,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/UriginError"
-        '498':
-          description: Your token is invalid or expired
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UriginError"
   /users/{userId}/relations:
     get:
       summary: Get all relations from a user
@@ -485,7 +443,7 @@ paths:
       tags:
         - users
       security:
-        - bearerAuth: [user, creator, moderator, admin]
+        - bearerAuth: [user, creator, admin]
       responses:
         '200':
           description: list of relations
@@ -513,12 +471,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/UriginError"
-        '498':
-          description: Your token is invalid or expired
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UriginError"
     post:
       summary: Create a new relation with another user
       operationId: post relations from a user
@@ -532,7 +484,7 @@ paths:
       tags:
         - users
       security:
-        - bearerAuth: [user, creator, moderator, admin]
+        - bearerAuth: [user, creator, admin]
       requestBody:
         description: new relation
         required: true
@@ -571,12 +523,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/UriginError"
-        '498':
-          description: Your token is invalid or expired
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UriginError"
   /users/{userId}/relations/{relationId}:
     put:
       summary: update your relation with another user
@@ -597,7 +543,7 @@ paths:
       tags:
         - users
       security:
-        - bearerAuth: [user, creator, moderator, admin]
+        - bearerAuth: [user, creator, admin]
       requestBody:
         description: updated relation
         required: true
@@ -634,12 +580,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/UriginError"
-        '498':
-          description: Your token is invalid or expired
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UriginError"
     delete:
       summary: delete your relation with another user
       operationId: delete relations
@@ -659,7 +599,7 @@ paths:
       tags:
         - users
       security:
-        - bearerAuth: [user, creator, moderator, admin]
+        - bearerAuth: [user, creator, admin]
       responses:
         '200':
           description: deleted success
@@ -677,12 +617,6 @@ paths:
                 $ref: "#/components/schemas/UriginError"
         '404':
           description: relation or user not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UriginError"
-        '498':
-          description: Your token is invalid or expired
           content:
             application/json:
               schema:
@@ -747,12 +681,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/UriginError"
-        '498':
-          description: Your token is invalid or expired
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UriginError"
   /games/{gameId}:
     put:
       summary: update a game
@@ -798,12 +726,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/UriginError"
-        '498':
-          description: Your token is invalid or expired
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UriginError"
     delete:
       summary: delete a game
       operationId: delete a game
@@ -835,12 +757,6 @@ paths:
                 $ref: "#/components/schemas/UriginError"
         '404':
           description: game not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UriginError"
-        '498':
-          description: Your token is invalid or expired
           content:
             application/json:
               schema:
@@ -917,12 +833,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/UriginError"
-        '498':
-          description: Your token is invalid or expired
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UriginError"
   /games/{gameId}/types/{typeId}:
     delete:
       summary: delete type to a game
@@ -961,12 +871,6 @@ paths:
                 $ref: "#/components/schemas/UriginError"
         '404':
           description: game or types not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UriginError"
-        '498':
-          description: Your token is invalid or expired
           content:
             application/json:
               schema:
@@ -1075,12 +979,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/UriginError"
-        '498':
-          description: Your token is invalid or expired
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UriginError"
   /games/{gameId}/comments/{commentId}:
     put:
       summary: update a comment from a game
@@ -1136,12 +1034,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/UriginError"
-        '498':
-          description: Your token is invalid or expired
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UriginError"
     delete:
       summary: delete a comment from a game
       operationId: delete a comment
@@ -1179,12 +1071,6 @@ paths:
                 $ref: "#/components/schemas/UriginError"
         '404':
           description: game or comment not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UriginError"
-        '498':
-          description: Your token is invalid or expired
           content:
             application/json:
               schema:
@@ -1243,12 +1129,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/UriginError"
-        '498':
-          description: Your token is invalid or expired
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UriginError"
   /types/{typeId}:
     put:
       summary: update a type
@@ -1298,12 +1178,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/UriginError"
-        '498':
-          description: Your token is invalid or expired
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UriginError"
     delete:
       summary: delete a type
       operationId: delete a type
@@ -1335,12 +1209,6 @@ paths:
                 $ref: "#/components/schemas/UriginError"
         '404':
           description: type not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UriginError"
-        '498':
-          description: Your token is invalid or expired
           content:
             application/json:
               schema:

@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
             as :'game',
             onDelete:'cascade'
         });
+        models.users.hasMany(models.games,{onDelete:'cascade'});
         models.users.hasMany(models.comments,{onDelete:'cascade'});
         models.users.belongsToMany(models.users, {
             through: {

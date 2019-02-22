@@ -202,7 +202,7 @@ export function isAuthenticate() {
             // verifies secret and checks exp
             Security.verifyToken(token, function (err, decoded) {
                 if (err) {
-                    return res.status(498).json({description: UriginError.TOKEN_INVALID});
+                    return res.status(401).json({description: UriginError.TOKEN_INVALID});
                 } else {
                     // if everything is good, save to request for use in other routes
                     req.decoded = decoded;
