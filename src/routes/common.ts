@@ -3,29 +3,39 @@ import {UriginError} from "../common/UriginError";
 import {UniqueConstraintError} from "sequelize";
 import {models} from "../models";
 
+
+/**
+ * Fonction générique qui permet de répondre à une requete get
+ * @param models = table qu'on souhaite récupérer
+ * @param attributes = array des attributs qu'on veux récupérer de la table
+ */
 export function get(models, attributes) {
     return function (request, response) {
         models.findAll().then(function (objects) {
             let result = [];
-
             for (let obj of objects) {
                 let res = new Object();
                 for (let attribute of attributes) {
                     res[attribute] = obj[attribute];
                 }
-
                 result.push(res);
             }
-
             response.json(result);
         })
     }
 }
 
+/**
+ * Permet de recupérer une ligne spécifique d'une table à partir de la primary key
+ * @param pkItem = nom de la primary key
+ * @param models = table qu'on souhaite récupérer
+ * @param attributes = array des attributs qu'on souhaite récupérer de la table
+ */
 export function getByPk(pkItem, models, attributes) {
     return function (request, response) {
         models.findByPk(request.params[pkItem]).then(function (obj) {
             if (obj == null){
+                // Si l'object correspondant à la Pk n'hésite pas en BD
                 response.status(404).json({description: UriginError.OBJECT_NOT_FOUND});
                 return;
             }
@@ -41,6 +51,10 @@ export function getByPk(pkItem, models, attributes) {
     }
 }
 
+/**
+ * Permet de mettre de la donnée dans le BD
+ * @param models = table sur laquelle on souhaite travaillé
+ */
 export function post(models) {
     return function (request, response) {
         models.create(request.body).then(function (objects) {
@@ -55,6 +69,12 @@ export function post(models) {
         })
     }
 }
+
+/**
+ * Permet d'ajouter une association dans une table d'association à partir des Fk
+ * @param models = la table d'associaition
+ * @param conditions = les Fk
+ */
 export function putAssos(models,conditions){
     return function (request, response) {
         let cond = {};
@@ -72,6 +92,12 @@ export function putAssos(models,conditions){
         })
     }
 }
+
+/**
+ * Permet d'update de la donnée en BD à partir de la valeur de la Pk
+ * @param models = table qu'on souhaite mettre à jour
+ * @param pkName = valeur de la pK
+ */
 export function putByPk(models, pkName) {
     return function (request, response) {
         models.findByPk(request.params[pkName]).then(function (objects) {
@@ -85,6 +111,12 @@ export function putByPk(models, pkName) {
         })
     }
 }
+
+/**
+ * Permet de supprimer de la donnée en BD à partir d'une table et des conditions
+ * @param models =  table qu'on souhaite mettre à jour
+ * @param conditions = object contenant les condtions {"nom de la colonne en BD" : "nom de la value dans les params"}
+ */
 export function deleteFunc(models,conditions){
     return (req,res)=>{
         let cond = {};
@@ -98,6 +130,14 @@ export function deleteFunc(models,conditions){
         });
     }
 }
+
+/**
+ * Permet de recupérer de l'information d'un table à partir d'un autre grâce à la liaison entre les 2
+ * @param models : table de départ
+ * @param relation : nom de la fonction qui permet de récupérer la table lié à models
+ * @param attributes : nom des attributs que l'on souhaite récupérer
+ * @param pkName = nom de la pK pour la table de départ
+ */
 export function getByRelation(models, relation, attributes, pkName) {
     return function (request, response) {
         models.findByPk(request.params[pkName]).then(function (objects) {
@@ -138,6 +178,14 @@ export function getByRelation(models, relation, attributes, pkName) {
     }
 }
 
+/**
+ * Permet de faire des actions sur les relations (add,get,remove...)
+ * @param models = 1er table
+ * @param models2 = 2eme table
+ * @param relation = methode qu'on souhaite faire
+ * @param pkName = pK de la 1er table
+ * @param pkName2 = pK de la 2eme table
+ */
 export function actionOnRelation(models, models2, relation, pkName, pkName2) {
     return function (request, response) {
         models.findByPk(request.params[pkName]).then(object => {
@@ -162,6 +210,10 @@ export function actionOnRelation(models, models2, relation, pkName, pkName2) {
     }
 }
 
+/**
+ * Test si on peut itérer sur un objet
+ * @param obj
+ */
 function isIterable(obj) {
     // checks for null and undefined
     if (obj == null) {
@@ -170,6 +222,10 @@ function isIterable(obj) {
     return typeof obj[Symbol.iterator] === 'function';
 }
 
+/**
+ * Permet de filtrer le body afin de retirer les clés que l'on ne souhaite pas communiquer à la BD
+ * @param jsonfilter
+ */
 export function filterBody(jsonfilter) {
     return (req, res, next) => {
         Object.keys(req.body).forEach(parameter => {
@@ -186,7 +242,9 @@ export function filterBody(jsonfilter) {
     }
 }
 
-
+/**
+ * Permet de tester si l'utilisateur est connecté grâce au /login
+ */
 export function isAuthenticate() {
     return (req, res, next) => {
 
@@ -221,6 +279,10 @@ export function isAuthenticate() {
     };
 }
 
+/**
+ * Verifie qu'un utilisateur posséde un certain rôle
+ * @param roles = array de roles
+ */
 export function checkRole(...roles) {
     return (req, res, next) => {
         if (roles.includes(req.decoded.role)) {
@@ -231,6 +293,13 @@ export function checkRole(...roles) {
     }
 }
 
+/**
+ * Permet de verifier que celui qui fais la requête est le createur de la donnée en BD
+ * @param pkItem = nom de la value qui correspond à la Pk dans la requete
+ * @param models = table
+ * @param relation = facultatif, si on a besoin de parcourir une relation pour obtenir l'utilisateur
+ * @param callbackFail = facultatif, si on souhaite faire une callback spécial si l'utilisateur n'est pas le créateur
+ */
 export function checkId(pkItem, models, relation?, callbackFail?) {
     return (req, res, next) => {
         if (relation) {

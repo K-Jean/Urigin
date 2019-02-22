@@ -1,3 +1,4 @@
+// Table des relations entre 2 utilisateurs (ami/blocké)
 module.exports = (sequelize, DataTypes) => {
     let Relation = sequelize.define('relations', {
         isBlocked :{

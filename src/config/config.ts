@@ -1,4 +1,5 @@
 module.exports = {
+    //Config de l'environnement de developpement
     development: {
         username: "postgres",
         password: "example",
@@ -9,6 +10,7 @@ module.exports = {
         private: "test/ressources/private.key",
         public: "test/ressources/public.key"
     },
+    //Config de l'environnement de test
     test: {
         username: "postgres",
         password: null,
@@ -19,6 +21,7 @@ module.exports = {
         private: "test/ressources/private.key",
         public: "test/ressources/public.key"
     },
+    //Config de l'environnement de production
     production: {
         username: process.env.DB_USERNAME,
         password: process.env.DB_PASSWORD,

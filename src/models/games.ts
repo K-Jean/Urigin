@@ -1,3 +1,4 @@
+// Table des jeux
 module.exports = (sequelize, DataTypes) => {
     let Game = sequelize.define('games', {
         name: {
@@ -18,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
         models.games.belongsToMany(models.types, {
             through:  "types_games",
             as: "types",
+            // Permet la suppression des relations dans les tables d'assossiation
             onDelete:'cascade'
         });
         models.games.belongsTo(models.users, {as: 'creator'});
