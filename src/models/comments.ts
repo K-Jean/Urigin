@@ -1,3 +1,4 @@
+// Table des commentaires des jeux
 module.exports = (sequelize, DataTypes) => {
     let Comment = sequelize.define('comments', {
         content:{

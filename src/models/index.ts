@@ -1,5 +1,5 @@
 'use strict';
-
+// Permet d'importer tous les models
 let fs        = require('fs');
 let path      = require('path');
 let Sequelize = require('sequelize');

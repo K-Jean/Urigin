@@ -1,3 +1,4 @@
+// Table d'association entre les jeux et les utilisateurs
 module.exports = (sequelize, DataTypes) => {
     let UserGame = sequelize.define('users_games',{
         score :{

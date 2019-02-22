@@ -14,28 +14,28 @@ router.get('/:gameId/types', common.getByRelation(models.games, 'getTypes', ["id
 router.get('/:gameId/users', common.getByRelation(models.games, 'getGamers', ["id", "username"], "gameId"));
 router.get('/:gameId/comments', common.getByRelation(models.games, 'getComments', ["id", "userId", "content", "createdAt", "updatedAt"], "gameId"));
 
+// Post de games
 router.post('/', common.isAuthenticate(), common.checkRole(Roles.CREATOR), (req, rep) => {
     req.body.creatorId = req.decoded.id;
     return common.post(models.games)(req, rep);
 });
-
 router.post('/:gameId/comments', common.isAuthenticate(), function(req,res){
     req.body.authorId = req.decoded.id;
     req.body.gameId = req.params.gameId;
     return common.post(models.comments)(req, res);
 });
-
 router.post('/:gameId/types', common.isAuthenticate(), common.checkRole(Roles.CREATOR), common.checkId('gameId', models.games, {
     model: models.users,
     as: 'creator'
 }), common.actionOnRelation(models.games, models.types, "addTypes", "gameId", "typeId"));
 
+// Put de games
 router.put('/:gameId', common.filterBody({"description": "true"}), common.isAuthenticate(), common.checkRole(Roles.CREATOR), common.checkId('gameId', models.games, {
     model: models.users,
     as: 'creator'
 }), common.putByPk(models.games, "gameId"));
-
 router.put('/:gameId/comments/:commentId',common.isAuthenticate(), common.checkId('commentId',models.comments,{model: models.users, as:'author'}), (request, response)=>{
+    // Permet d'assurer que le commentaire correspond bien au jeu
     models.comments.findByPk(request.params['commentId'], {include: {model: models.games, as:'game'}}).then(function (objects) {
         if(objects['game']['id'] == request.params.gameId){
             objects.update(request.body).then((result, rejected) => {
@@ -49,7 +49,14 @@ router.put('/:gameId/comments/:commentId',common.isAuthenticate(), common.checkI
     });
 });
 
-router.delete('/:id',common.isAuthenticate(),common.checkRole(Roles.CREATOR,Roles.ADMIN),common.deleteFunc(models.games,{id:'id'}));
+// Delete de games
+router.delete('/:gameId',common.isAuthenticate(),common.checkRole(Roles.CREATOR,Roles.ADMIN),common.checkId('gameId',models.games,{model: models.users, as: 'creator'}, (req,res,next)=>{
+    if(req.decoded.role == Roles.ADMIN){
+        next();
+    }else{
+        return res.status(403).json({description: UriginError.FORBIDDEN});
+    }
+}),common.deleteFunc(models.games,{id:'gameId'}));
 router.delete('/:gameId/comments/:commentId',common.isAuthenticate(),common.checkId('commentId',models.comments,{model: models.users, as:'author'}, (req,res,next)=>{
     if(req.decoded.role == Roles.ADMIN){
         next();

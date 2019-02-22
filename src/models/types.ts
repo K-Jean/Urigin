@@ -1,3 +1,4 @@
+// Table des différents types des jeux
 module.exports = (sequelize, DataTypes) => {
     let Type = sequelize.define('types', {
         name:{

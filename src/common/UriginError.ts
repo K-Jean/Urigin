@@ -1,3 +1,5 @@
+// Définition des méssages d'erreurs HTTP de l'API
+
 export enum UriginError {
     NO_USER_FOUND = 'User not found.',
     OBJECT_NOT_FOUND = 'Object not found.',

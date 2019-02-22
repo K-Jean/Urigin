@@ -1,3 +1,4 @@
+// Tables des utilisateurs
 module.exports = (sequelize, DataTypes) => {
     let User = sequelize.define('users', {
         username: {
