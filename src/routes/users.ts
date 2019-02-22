@@ -14,7 +14,7 @@ router.get('/', common.isAuthenticate(), common.checkRole(Roles.ADMIN), common.g
 // TODO : TEST
 router.get('/:userId',common.getByPk('userId',models.users,["id","username"]));
 router.get('/:userId/relations', common.isAuthenticate(), common.checkId('userId',models.users), common.getByRelation(models.users,'getOther',['id','username',{ 'relations': ['isBlocked']},'createAt','updatedAt'], 'userId'));
-router.get('/:userId/games', common.getByRelation(models.users,'getGame', ["name","score","favorite","createAt"], 'userId'));
+router.get('/:userId/games', common.getByRelation(models.users,'getGame', ["id","name","description",{ 'users_games': ['score', 'favorite']},"createAt"], 'userId'));
 
 router.post('/',common.filterBody({"email" : "true","username" : "true","password" : "true"}),(request, response) => {
     request.body.role = Roles.USER;
