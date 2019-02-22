@@ -1,6 +1,6 @@
 import {Security} from "../security/security";
 import {UriginError} from "../common/UriginError";
-import {UniqueConstraintError} from "sequelize";
+import {UniqueConstraintError, ValidationError} from "sequelize";
 import {models} from "../models";
 
 
@@ -98,8 +98,14 @@ export function putAssos(models,conditions){
             }
             objects[0].update(request.body).then((result, rejected) => {
                 response.json("OK");
+            }).catch(err => {
+                if(err instanceof ValidationError){
+                    response.status(400).json({description: UriginError.PARAMETER_VALIDATION_ERROR});
+                } else {
+                    response.status(500).json({description: UriginError.ERROR_WITH_DATABASE});
+                }
             });
-        })
+        });
     }
 }
 

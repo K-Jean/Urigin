@@ -9,7 +9,8 @@ export enum UriginError {
     TOKEN_INVALID = 'Failed to authenticate token.',
     FORBIDDEN = 'You don\'t have enough perogative.',
     NO_TOKEN = 'No token provided.',
-    PARAMETER_MANDATORY = 'the parameter %d is mandatory',
-    ERROR_WITH_DATABASE = 'error occured during databse action',
-    OBJECT_ALREADY_EXIST = 'an object already exist with this parameters'
+    PARAMETER_VALIDATION_ERROR = 'Your parameter don\'t respect the documentation',
+    PARAMETER_MANDATORY = 'The parameter %d is mandatory',
+    ERROR_WITH_DATABASE = 'Error occured during databse action',
+    OBJECT_ALREADY_EXIST = 'An object already exist with this parameters'
 }
