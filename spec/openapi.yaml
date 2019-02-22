@@ -1289,6 +1289,10 @@ components:
           # Returned by GET, not used in POST/PUT/PATCH
           type: integer
           readOnly: true
+        userId:
+          # Returned by GET, not used in POST/PUT/PATCH
+          type: integer
+          readOnly: true
         content:
           type: string
         createdAt:

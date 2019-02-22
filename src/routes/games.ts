@@ -8,11 +8,11 @@ import {UniqueConstraintError} from "sequelize";
 
 let router = express.Router();
 
-router.get('/', common.get(models.games, ["name", "description", "createdAt", "updatedAt"]));
-router.get('/:gameId', common.getByPk('gameId', models.games, ["name", "description", "createdAt", "updatedAt"]));
+router.get('/', common.get(models.games, ["id", "name", "description", "createdAt", "updatedAt"]));
+router.get('/:gameId', common.getByPk('gameId', models.games, ["id","name", "description", "createdAt", "updatedAt"]));
 router.get('/:gameId/types', common.getByRelation(models.games, 'getTypes', ["id", "name", "description"], "gameId"));
-router.get('/:gameId/users', common.getByRelation(models.games, 'getUsers', ["id", "username"], "gameId"));
-router.get('/:gameId/comments', common.getByRelation(models.games, 'getComments', ["id", "content", "createdAt", "updatedAt"], "gameId"));
+router.get('/:gameId/users', common.getByRelation(models.games, 'getGamers', ["id", "username"], "gameId"));
+router.get('/:gameId/comments', common.getByRelation(models.games, 'getComments', ["id", "userId", "content", "createdAt", "updatedAt"], "gameId"));
 
 router.post('/', common.isAuthenticate(), common.checkRole(Roles.CREATOR), (req, rep) => {
     req.body.creatorId = req.decoded.id;
