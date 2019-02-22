@@ -7,6 +7,7 @@ RUN npm install
 
 FROM node:8
 
+ENV NODE_ENV=production
 WORKDIR /app
 RUN npm install -g typescript
 COPY --from=build /app .

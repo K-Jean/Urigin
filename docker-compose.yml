@@ -4,9 +4,19 @@ services:
     build: .
     ports:
       - "3000:3000"
+    volumes:
+      - ./test/ressources/:/etc/keys
+    environment:
+      DB_USERNAME: "postgres"
+      DB_PASSWORD: "example"
+      DB_NAME: "postgres"
+      DB_PORT: 5432
+      DB_HOSTNAME: "postgres"
+      PRIVATE_KEY: "/etc/keys/private.key"
+      PUBLIC_KEY: "/etc/keys/public.key"
   postgres:
     image: "postgres"
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_PASSWORD: example
+      POSTGRES_PASSWORD: example"
